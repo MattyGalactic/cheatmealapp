@@ -180,6 +180,37 @@ main {
   margin-top: 0.65rem;
 }
 
+.mode-toggle {
+  margin-top: 0.75rem;
+  display: inline-flex;
+  width: 100%;
+  max-width: 320px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.mode-option {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+}
+
+.mode-option + .mode-option {
+  border-left: 1px solid var(--border);
+}
+
+.mode-option.active {
+  background: rgba(255, 107, 53, 0.14);
+  color: #ffd8ca;
+}
+
 .chip {
   border: 1px solid var(--border);
   background: var(--panel);

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { LandingSearchForm } from "../components/LandingSearchForm";
 
 export default function HomePage() {
@@ -6,16 +5,12 @@ export default function HomePage() {
     <main className="hero">
       <div className="container">
         <section className="hero-card" aria-labelledby="cheatmeal-title">
-          <p className="eyebrow">Nashville Pilot</p>
-          <p className="brand" id="cheatmeal-title">Cheat Meal</p>
-          <p className="tagline">Enter the number of calories you have left for the day</p>
+          <p className="brand" id="cheatmeal-title">Cheat Smart.</p>
+          <p className="tagline">Strategic Indulgence for the end of your day.</p>
 
           <LandingSearchForm />
 
           <p className="footer-note">National chains only. Results within 10 miles.</p>
-          <p className="footer-note">
-            Health endpoint: <Link href="/api/health">/api/health</Link>
-          </p>
         </section>
       </div>
     </main>

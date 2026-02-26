@@ -26,8 +26,18 @@ function run() {
   );
   assert.deepEqual(filtered.map((x) => x.id), ["1"]);
 
+  const anyFiltered = filterByCravings(
+    [
+      { id: "1", cravings: ["Cheesy", "Comfort"] },
+      { id: "2", cravings: ["Cheesy"] },
+      { id: "3", cravings: ["Comfort"] },
+    ],
+    ["Cheesy", "Comfort"],
+    "any",
+  );
+  assert.deepEqual(anyFiltered.map((x) => x.id), ["1", "2", "3"]);
+
   console.log("cravings dev test passed");
 }
 
 run();
-

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { MealCard } from "./MealCard";
 import type { RecommendationSortKey, RecommendationsApiResponse } from "../lib/api";
-import type { CravingKey } from "../lib/cravings";
+import type { CravingKey, CravingMatchMode } from "../lib/cravings";
 import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
 import { buildWhyThisWorksMap } from "../lib/whyThisWorks";
@@ -37,8 +37,9 @@ const CRAVING_OPTIONS: CravingKey[] = [
 export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsListClientProps) {
   const [sort, setSort] = useState<RecommendationSortKey>("best_match");
   const [selectedCravings, setSelectedCravings] = useState<CravingKey[]>([]);
+  const [cravingMode, setCravingMode] = useState<CravingMatchMode>("all");
   const taggedResults = tagResultsWithCravings(data.results, calorieBudget);
-  const filteredResults = filterByCravings(taggedResults, selectedCravings);
+  const filteredResults = filterByCravings(taggedResults, selectedCravings, cravingMode);
   const sortedResults = sortRecommendationResults(filteredResults, sort);
   const whyMap = buildWhyThisWorksMap(data.results, calorieBudget);
 
@@ -97,12 +98,30 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
             );
           })}
         </div>
+        <div className="mode-toggle" role="group" aria-label="Craving match mode">
+          <button
+            type="button"
+            className={`mode-option${cravingMode === "all" ? " active" : ""}`}
+            aria-pressed={cravingMode === "all"}
+            onClick={() => setCravingMode("all")}
+          >
+            Match All
+          </button>
+          <button
+            type="button"
+            className={`mode-option${cravingMode === "any" ? " active" : ""}`}
+            aria-pressed={cravingMode === "any"}
+            onClick={() => setCravingMode("any")}
+          >
+            Match Any
+          </button>
+        </div>
       </section>
 
       {data.results.length === 0 ? (
         <p className="empty">No meals found under your calorie budget. Try a higher number.</p>
       ) : filteredResults.length === 0 ? (
-        <p className="empty">No results match all selected cravings. Try clearing a chip.</p>
+        <p className="empty">No matches for this craving combo. Try Match Any.</p>
       ) : (
         <section className="results-grid" aria-label="Recommended meals">
           {sortedResults.map((result) => (

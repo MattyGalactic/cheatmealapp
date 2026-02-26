@@ -11,6 +11,8 @@ export type CravingKey =
   | "High-Protein"
   | "Low-Cal";
 
+export type CravingMatchMode = "all" | "any";
+
 export type RecommendationListItem = RecommendationsApiResponse["results"][number];
 
 const KEYWORD_RULES: Array<{ craving: Exclude<CravingKey, "High-Protein" | "Low-Cal">; keywords: string[] }> = [
@@ -74,8 +76,12 @@ export function tagResultsWithCravings(
 export function filterByCravings<T extends { cravings: string[] }>(
   results: T[],
   selectedCravings: string[],
+  mode: CravingMatchMode = "all",
 ): T[] {
   if (selectedCravings.length === 0) return [...results];
+  if (mode === "any") {
+    return results.filter((result) => selectedCravings.some((craving) => result.cravings.includes(craving)));
+  }
   return results.filter((result) => selectedCravings.every((craving) => result.cravings.includes(craving)));
 }
 

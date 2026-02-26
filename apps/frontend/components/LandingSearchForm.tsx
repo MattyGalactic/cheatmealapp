@@ -18,7 +18,7 @@ export function LandingSearchForm() {
       }}
     >
       <label className="label" htmlFor="calories">
-        Remaining Calories
+        Calories left today
       </label>
       <input
         id="calories"
