@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { MealCard } from "./MealCard";
 import type { RecommendationSortKey, RecommendationsApiResponse } from "../lib/api";
+import type { CravingKey } from "../lib/cravings";
+import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
 import { buildWhyThisWorksMap } from "../lib/whyThisWorks";
 
@@ -20,10 +22,33 @@ const SORT_OPTIONS: Array<{ value: RecommendationSortKey; label: string }> = [
   { value: "restaurant", label: "Restaurant" },
 ];
 
+const CRAVING_OPTIONS: CravingKey[] = [
+  "Crispy",
+  "Cheesy",
+  "Sweet",
+  "Spicy",
+  "Savory",
+  "Fresh",
+  "Comfort",
+  "High-Protein",
+  "Low-Cal",
+];
+
 export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsListClientProps) {
   const [sort, setSort] = useState<RecommendationSortKey>("best_match");
-  const sortedResults = sortRecommendationResults(data.results, sort);
+  const [selectedCravings, setSelectedCravings] = useState<CravingKey[]>([]);
+  const taggedResults = tagResultsWithCravings(data.results, calorieBudget);
+  const filteredResults = filterByCravings(taggedResults, selectedCravings);
+  const sortedResults = sortRecommendationResults(filteredResults, sort);
   const whyMap = buildWhyThisWorksMap(data.results, calorieBudget);
+
+  const toggleCraving = (craving: CravingKey) => {
+    setSelectedCravings((current) =>
+      current.includes(craving)
+        ? current.filter((value) => value !== craving)
+        : [...current, craving],
+    );
+  };
 
   return (
     <>
@@ -44,8 +69,40 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
         </select>
       </div>
 
+      <section className="craving-panel" aria-label="Craving filters">
+        <div className="craving-panel-header">
+          <p className="sort-label">Craving</p>
+          <button
+            type="button"
+            className="clear-button"
+            onClick={() => setSelectedCravings([])}
+            disabled={selectedCravings.length === 0}
+          >
+            Clear
+          </button>
+        </div>
+        <div className="chip-wrap">
+          {CRAVING_OPTIONS.map((craving) => {
+            const selected = selectedCravings.includes(craving);
+            return (
+              <button
+                key={craving}
+                type="button"
+                className={`chip${selected ? " selected" : ""}`}
+                aria-pressed={selected}
+                onClick={() => toggleCraving(craving)}
+              >
+                {craving}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
       {data.results.length === 0 ? (
         <p className="empty">No meals found under your calorie budget. Try a higher number.</p>
+      ) : filteredResults.length === 0 ? (
+        <p className="empty">No results match all selected cravings. Try clearing a chip.</p>
       ) : (
         <section className="results-grid" aria-label="Recommended meals">
           {sortedResults.map((result) => (

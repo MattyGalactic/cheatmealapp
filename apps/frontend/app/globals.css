@@ -158,6 +158,61 @@ main {
   max-width: 420px;
 }
 
+.craving-panel {
+  margin-top: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.craving-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 0.45rem 0.7rem;
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chip.selected {
+  border-color: rgba(255, 107, 53, 0.45);
+  background: rgba(255, 107, 53, 0.14);
+  color: #ffd8ca;
+}
+
+.clear-button {
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.15rem 0;
+}
+
+.clear-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 .sort-label {
   color: var(--muted);
   font-size: 0.9rem;

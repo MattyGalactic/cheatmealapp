@@ -4,3 +4,4 @@ dist/
 .env
 .env.local
 apps/*/.env.local
+apps/frontend/.data/
