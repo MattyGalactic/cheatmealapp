@@ -27,7 +27,6 @@ export function LandingSearchForm() {
         min={50}
         max={2000}
         required
-        defaultValue={400}
         className="input"
         inputMode="numeric"
       />
@@ -35,4 +34,3 @@ export function LandingSearchForm() {
     </form>
   );
 }
-
