@@ -1,0 +1,294 @@
+:root {
+  color-scheme: dark;
+  --bg: #0f0f10;
+  --bg-elev: #17181a;
+  --panel: #1d1f22;
+  --text: #f4f4f5;
+  --muted: #b5b8bd;
+  --accent: #ff6b35;
+  --accent-2: #ff8c42;
+  --border: rgba(255, 255, 255, 0.08);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255, 107, 53, 0.2), transparent 45%),
+    radial-gradient(circle at 90% 0%, rgba(255, 140, 66, 0.14), transparent 40%),
+    var(--bg);
+  color: var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+main {
+  min-height: 100vh;
+}
+
+.container {
+  width: min(960px, 100% - 2rem);
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.hero-card {
+  width: min(540px, 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+.brand {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+.eyebrow {
+  margin: 0 0 0.45rem;
+  color: var(--accent-2);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.tagline {
+  margin: 0.6rem 0 1.25rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.form-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.input,
+.button {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font: inherit;
+}
+
+.input {
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.9rem 0.95rem;
+}
+
+.button {
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  color: #111;
+  font-weight: 700;
+  padding: 0.9rem 1rem;
+  cursor: pointer;
+}
+
+.button.secondary {
+  background: transparent;
+  color: var(--text);
+}
+
+.footer-note {
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.results-shell {
+  padding: 1.5rem 0 3rem;
+}
+
+.results-header {
+  margin-bottom: 1rem;
+}
+
+.results-title {
+  margin: 0;
+  font-size: 1.55rem;
+  line-height: 1.1;
+}
+
+.results-subtitle {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.results-grid {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.sort-bar {
+  margin-top: 0.85rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6rem;
+  align-items: center;
+  max-width: 420px;
+}
+
+.sort-label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.select {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 0.75rem;
+}
+
+.card-title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.card-subtitle {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+}
+
+.rank-badge {
+  min-width: 2rem;
+  text-align: center;
+  border-radius: 999px;
+  padding: 0.35rem 0.55rem;
+  background: rgba(255, 107, 53, 0.14);
+  border: 1px solid rgba(255, 107, 53, 0.35);
+  color: #ffd8ca;
+  font-weight: 700;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin-top: 0.85rem;
+}
+
+.metric {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.65rem;
+}
+
+.metric-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.metric-value {
+  display: block;
+  margin-top: 0.2rem;
+  font-weight: 700;
+}
+
+.why {
+  margin-top: 0.85rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.why-label {
+  color: var(--text);
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.card-actions {
+  margin-top: 0.95rem;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  padding: 0.65rem 0.8rem;
+  font-weight: 600;
+}
+
+.empty {
+  color: var(--muted);
+  border: 1px dashed var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 700px) {
+  .hero-card {
+    padding: 1.5rem;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
