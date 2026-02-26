@@ -8,7 +8,7 @@ export default function HomePage() {
         <section className="hero-card" aria-labelledby="cheatmeal-title">
           <p className="eyebrow">Nashville Pilot</p>
           <p className="brand" id="cheatmeal-title">Cheat Meal</p>
-          <p className="tagline">Spend your last 400 calories wisely.</p>
+          <p className="tagline">Enter the number of calories you have left for the day</p>
 
           <LandingSearchForm />
 
