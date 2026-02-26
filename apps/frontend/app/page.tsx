@@ -5,7 +5,7 @@ export default function HomePage() {
     <main className="hero">
       <div className="container">
         <section className="hero-card" aria-labelledby="cheatmeal-title">
-          <p className="brand" id="cheatmeal-title">Cheat Smart.</p>
+          <p className="brand" id="cheatmeal-title">Cheat Meal</p>
           <p className="tagline">Strategic Indulgence for the end of your day.</p>
 
           <LandingSearchForm />
