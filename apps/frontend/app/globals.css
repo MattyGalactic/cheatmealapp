@@ -19,7 +19,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
   background:
     radial-gradient(circle at 15% 10%, rgba(255, 107, 53, 0.2), transparent 45%),
     radial-gradient(circle at 90% 0%, rgba(255, 140, 66, 0.14), transparent 40%),
@@ -131,8 +130,9 @@ main {
 
 .results-page-container {
   width: 100%;
-  max-width: 48rem;
+  max-width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
   padding-inline: 1rem;
 }
 
@@ -173,12 +173,17 @@ main {
   gap: 0.75rem;
 }
 
+.filters-row > * {
+  min-width: 0;
+}
+
 .sort-inline {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
   min-width: 0;
-  flex: 1 1 14rem;
+  flex: 1 1 100%;
+  width: 100%;
 }
 
 .filters-text {
@@ -214,11 +219,17 @@ main {
 }
 
 .select.compact {
-  min-width: 150px;
+  min-width: 0;
   max-width: 100%;
+  width: 100%;
   padding: 0.45rem 0.65rem;
   font-size: 0.85rem;
   border-radius: 9px;
+}
+
+.sort-select {
+  width: 100%;
+  max-width: 100%;
 }
 
 .craving-panel {
@@ -529,6 +540,17 @@ main {
 
   .calories-main {
     font-size: 1.08rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .sort-inline {
+    flex: 1 1 14rem;
+    width: auto;
+  }
+
+  .sort-select {
+    width: auto;
   }
 }
 

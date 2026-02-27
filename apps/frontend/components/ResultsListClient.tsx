@@ -78,7 +78,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
             id="sort"
             name="sort"
             value={sort}
-            className="select compact"
+            className="select compact sort-select"
             onChange={(event) => {
               const nextSort = event.target.value as RecommendationSortKey;
               setSort(nextSort);
