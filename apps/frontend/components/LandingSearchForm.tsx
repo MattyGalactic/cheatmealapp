@@ -23,7 +23,7 @@ export function LandingSearchForm() {
       <input
         id="calories"
         name="calories"
-        type="text"
+        type="tel"
         required
         className="input"
         inputMode="numeric"
