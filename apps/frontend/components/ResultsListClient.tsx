@@ -72,25 +72,27 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   return (
     <>
       <div className="filters-row">
-        <div className="sort-inline">
-          <span className="filters-text">Sort</span>
-          <select
-            id="sort"
-            name="sort"
-            value={sort}
-            className="select compact sort-select"
-            onChange={(event) => {
-              const nextSort = event.target.value as RecommendationSortKey;
-              setSort(nextSort);
-              trackFilterChanged({ sortMode: nextSort });
-            }}
-          >
-            {SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+        <div className="sort-inline sort-control">
+          <span className="filters-text sort-label">Sort</span>
+          <div className="sort-select-wrap">
+            <select
+              id="sort"
+              name="sort"
+              value={sort}
+              className="select compact sort-select"
+              onChange={(event) => {
+                const nextSort = event.target.value as RecommendationSortKey;
+                setSort(nextSort);
+                trackFilterChanged({ sortMode: nextSort });
+              }}
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <button
