@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MealCard } from "./MealCard";
 import type { RecommendationSortKey, RecommendationsApiResponse } from "../lib/api";
 import type { CravingKey, CravingMatchMode } from "../lib/cravings";
+import { emitEvent } from "../lib/events";
 import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
 import { buildWhyThisWorksMap } from "../lib/whyThisWorks";
@@ -44,12 +45,28 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const sortedResults = sortRecommendationResults(filteredResults, sort);
   const whyMap = buildWhyThisWorksMap(data.results, calorieBudget);
 
+  const trackFilterChanged = (next: {
+    cravingsSelected?: CravingKey[];
+    matchMode?: CravingMatchMode;
+    sortMode?: RecommendationSortKey;
+  }) => {
+    emitEvent({
+      event_name: "filter_changed",
+      calories_budget: calorieBudget,
+      cravings_selected: next.cravingsSelected ?? selectedCravings,
+      match_mode: next.matchMode ?? cravingMode,
+      sort_mode: next.sortMode ?? sort,
+    });
+  };
+
   const toggleCraving = (craving: CravingKey) => {
-    setSelectedCravings((current) =>
-      current.includes(craving)
+    setSelectedCravings((current) => {
+      const updated = current.includes(craving)
         ? current.filter((value) => value !== craving)
-        : [...current, craving],
-    );
+        : [...current, craving];
+      trackFilterChanged({ cravingsSelected: updated });
+      return updated;
+    });
   };
 
   return (
@@ -62,7 +79,11 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
             name="sort"
             value={sort}
             className="select compact"
-            onChange={(event) => setSort(event.target.value as RecommendationSortKey)}
+            onChange={(event) => {
+              const nextSort = event.target.value as RecommendationSortKey;
+              setSort(nextSort);
+              trackFilterChanged({ sortMode: nextSort });
+            }}
           >
             {SORT_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -79,7 +100,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
           onClick={() => setCravingsOpen((open) => !open)}
         >
           <span className="filters-text">Cravings</span>
-          <span className={`chevron${cravingsOpen ? " open" : ""}`}>⌄</span>
+          <span className={`chevron${cravingsOpen ? " open" : ""}`}>v</span>
         </button>
       </div>
 
@@ -89,7 +110,10 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
             <button
               type="button"
               className="clear-button"
-              onClick={() => setSelectedCravings([])}
+              onClick={() => {
+                setSelectedCravings([]);
+                trackFilterChanged({ cravingsSelected: [] });
+              }}
               disabled={selectedCravings.length === 0}
             >
               Clear
@@ -116,7 +140,10 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
               type="button"
               className={`mode-option${cravingMode === "all" ? " active" : ""}`}
               aria-pressed={cravingMode === "all"}
-              onClick={() => setCravingMode("all")}
+              onClick={() => {
+                setCravingMode("all");
+                trackFilterChanged({ matchMode: "all" });
+              }}
             >
               Match All
             </button>
@@ -124,7 +151,10 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
               type="button"
               className={`mode-option${cravingMode === "any" ? " active" : ""}`}
               aria-pressed={cravingMode === "any"}
-              onClick={() => setCravingMode("any")}
+              onClick={() => {
+                setCravingMode("any");
+                trackFilterChanged({ matchMode: "any" });
+              }}
             >
               Match Any
             </button>
@@ -138,12 +168,16 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
         <p className="empty">No matches for this craving combo. Try Match Any.</p>
       ) : (
         <section className="results-grid" aria-label="Recommended meals">
-          {sortedResults.map((result) => (
+          {sortedResults.map((result, index) => (
             <MealCard
               key={result.itemId}
               result={result}
               whyThisWorks={whyMap.get(result.itemId)}
               calorieBudget={calorieBudget}
+              displayedRank={index + 1}
+              selectedCravings={selectedCravings}
+              matchMode={cravingMode}
+              sortMode={sort}
             />
           ))}
         </section>

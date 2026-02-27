@@ -29,9 +29,21 @@ CREATE TABLE IF NOT EXISTS events (
   restaurant_name TEXT,
   item_id TEXT,
   item_name TEXT,
-  metadata_json JSONB,
+  rank_position INTEGER,
+  cravings_selected JSONB,
+  match_mode TEXT,
+  sort_mode TEXT,
+  provider TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE events ADD COLUMN IF NOT EXISTS rank_position INTEGER;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS cravings_selected JSONB;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS match_mode TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS sort_mode TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS restaurant_name TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS item_name TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS provider TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_events_created_at ON events (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_events_event_name ON events (event_name);

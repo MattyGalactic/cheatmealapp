@@ -4,7 +4,17 @@ import { createEvent, listEvents } from "../../../lib/server/eventStore";
 
 export const runtime = "nodejs";
 
-const allowedEventNames = ["search_submitted", "result_clicked", "maps_opened"] as const;
+const allowedEventNames = [
+  "search_submitted",
+  "result_selected",
+  "maps_opened",
+  "filter_changed",
+  "order_clicked",
+  "distance_clicked",
+  "change_provider_clicked",
+] as const;
+const allowedProviders = ["doordash", "ubereats"] as const;
+const allowedMatchModes = ["all", "any"] as const;
 
 const createEventSchema = z.object({
   event_name: z.enum(allowedEventNames),
@@ -14,7 +24,11 @@ const createEventSchema = z.object({
   restaurant_name: z.string().max(256).nullable().optional(),
   item_id: z.string().max(256).nullable().optional(),
   item_name: z.string().max(256).nullable().optional(),
-  metadata_json: z.record(z.unknown()).nullable().optional(),
+  rank_position: z.number().int().min(1).max(500).nullable().optional(),
+  cravings_selected: z.array(z.string().max(64)).max(20).nullable().optional(),
+  match_mode: z.enum(allowedMatchModes).nullable().optional(),
+  sort_mode: z.string().max(64).nullable().optional(),
+  provider: z.enum(allowedProviders).nullable().optional(),
 });
 
 const listQuerySchema = z.object({
@@ -42,7 +56,11 @@ export async function POST(request: NextRequest) {
       restaurantName: payload.restaurant_name ?? null,
       itemId: payload.item_id ?? null,
       itemName: payload.item_name ?? null,
-      metadataJson: payload.metadata_json ?? null,
+      rankPosition: payload.rank_position ?? null,
+      cravingsSelected: payload.cravings_selected ?? null,
+      matchMode: payload.match_mode ?? null,
+      sortMode: payload.sort_mode ?? null,
+      provider: payload.provider ?? null,
     });
 
     return new NextResponse(null, { status: 204 });
@@ -80,4 +98,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-

@@ -3,7 +3,14 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { dbPool } from "./db";
 
-export type EventName = "search_submitted" | "result_clicked" | "maps_opened";
+export type EventName =
+  | "search_submitted"
+  | "result_selected"
+  | "maps_opened"
+  | "filter_changed"
+  | "order_clicked"
+  | "distance_clicked"
+  | "change_provider_clicked";
 
 export type EventRecord = {
   id: string;
@@ -14,7 +21,11 @@ export type EventRecord = {
   restaurantName: string | null;
   itemId: string | null;
   itemName: string | null;
-  metadataJson: Record<string, unknown> | null;
+  rankPosition: number | null;
+  cravingsSelected: string[] | null;
+  matchMode: string | null;
+  sortMode: string | null;
+  provider: string | null;
   createdAt: string;
 };
 
@@ -33,7 +44,11 @@ function normalizeEventRow(row: any): EventRecord {
     restaurantName: row.restaurantName ?? row.restaurant_name ?? null,
     itemId: row.itemId ?? row.item_id ?? null,
     itemName: row.itemName ?? row.item_name ?? null,
-    metadataJson: row.metadataJson ?? row.metadata_json ?? null,
+    rankPosition: row.rankPosition ?? row.rank_position ?? null,
+    cravingsSelected: row.cravingsSelected ?? row.cravings_selected ?? null,
+    matchMode: row.matchMode ?? row.match_mode ?? null,
+    sortMode: row.sortMode ?? row.sort_mode ?? null,
+    provider: row.provider ?? null,
     createdAt: new Date(row.createdAt ?? row.created_at ?? new Date()).toISOString(),
   };
 }
@@ -64,9 +79,9 @@ export async function createEvent(input: CreateEventInput): Promise<void> {
     try {
       await dbPool.query(
         `INSERT INTO events (
-          id, event_name, session_id, calories_budget, restaurant_id,
-          restaurant_name, item_id, item_name, metadata_json, created_at
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+          id, event_name, session_id, calories_budget, restaurant_id, restaurant_name,
+          item_id, item_name, rank_position, cravings_selected, match_mode, sort_mode, provider, created_at
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
         [
           event.id,
           event.eventName,
@@ -76,7 +91,11 @@ export async function createEvent(input: CreateEventInput): Promise<void> {
           event.restaurantName,
           event.itemId,
           event.itemName,
-          event.metadataJson,
+          event.rankPosition,
+          event.cravingsSelected,
+          event.matchMode,
+          event.sortMode,
+          event.provider,
           event.createdAt,
         ],
       );
@@ -94,7 +113,7 @@ export async function listEvents(limit: number): Promise<EventRecord[]> {
     try {
       const result = await dbPool.query(
         `SELECT id, event_name, session_id, calories_budget, restaurant_id, restaurant_name,
-                item_id, item_name, metadata_json, created_at
+                item_id, item_name, rank_position, cravings_selected, match_mode, sort_mode, provider, created_at
          FROM events
          ORDER BY created_at DESC
          LIMIT $1`,
@@ -108,4 +127,3 @@ export async function listEvents(limit: number): Promise<EventRecord[]> {
 
   return listFallbackEvents(limit);
 }
-

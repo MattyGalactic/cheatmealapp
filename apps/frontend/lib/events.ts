@@ -1,7 +1,16 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
 const SESSION_STORAGE_KEY = "cm_session_id";
 
-export type ClientEventName = "search_submitted" | "result_clicked" | "maps_opened";
+export type ClientEventName =
+  | "search_submitted"
+  | "result_selected"
+  | "maps_opened"
+  | "filter_changed"
+  | "order_clicked"
+  | "distance_clicked"
+  | "change_provider_clicked";
+export type MatchMode = "all" | "any";
+export type Provider = "doordash" | "ubereats";
 
 export type ClientEventPayload = {
   event_name: ClientEventName;
@@ -11,7 +20,11 @@ export type ClientEventPayload = {
   restaurant_name?: string | null;
   item_id?: string | null;
   item_name?: string | null;
-  metadata_json?: Record<string, unknown> | null;
+  rank_position?: number | null;
+  cravings_selected?: string[] | null;
+  match_mode?: MatchMode | null;
+  sort_mode?: string | null;
+  provider?: Provider | null;
 };
 
 function canUseBrowserStorage(): boolean {
