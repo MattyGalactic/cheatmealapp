@@ -43,6 +43,9 @@ main {
 .container {
   width: min(960px, 100% - 2rem);
   margin: 0 auto;
+  padding-left: calc(16px + env(safe-area-inset-left));
+  padding-right: calc(16px + env(safe-area-inset-right));
+  box-sizing: border-box;
 }
 
 .hero {
@@ -142,14 +145,14 @@ main {
   margin: 0 auto;
   box-sizing: border-box;
   min-width: 0;
-  padding-left: max(1rem, env(safe-area-inset-left));
-  padding-right: max(1rem, env(safe-area-inset-right));
+  padding-left: calc(16px + env(safe-area-inset-left));
+  padding-right: calc(16px + env(safe-area-inset-right));
 }
 
 @media (min-width: 640px) {
   .results-page-container {
-    padding-left: max(1.5rem, env(safe-area-inset-left));
-    padding-right: max(1.5rem, env(safe-area-inset-right));
+    padding-left: calc(24px + env(safe-area-inset-left));
+    padding-right: calc(24px + env(safe-area-inset-right));
   }
 }
 
