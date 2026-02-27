@@ -56,7 +56,7 @@ export async function getRecommendations(input: SearchRecommendationsInput): Pro
     state: serverEnv.PILOT_STATE,
   });
 
-  const ranked = rankMeals(
+  const rankedCandidates = rankMeals(
     candidates.map((candidate) => ({
       itemId: candidate.id,
       itemName: candidate.name,
@@ -65,7 +65,20 @@ export async function getRecommendations(input: SearchRecommendationsInput): Pro
       priceUsd: candidate.priceUsd,
       restaurant: candidate.restaurant,
     })),
-  ).map((rankedItem, index) => ({
+  );
+
+  // Multiple nearby locations of the same chain can produce identical item names.
+  // Keep only the top-scoring instance per chain+item for a cleaner recommendation list.
+  const dedupedByChainItem = rankedCandidates.filter((candidate, index, list) => {
+    const candidateKey = `${candidate.restaurant.name.toLowerCase()}::${candidate.itemName.toLowerCase()}`;
+    const firstIndex = list.findIndex((item) => {
+      const key = `${item.restaurant.name.toLowerCase()}::${item.itemName.toLowerCase()}`;
+      return key === candidateKey;
+    });
+    return firstIndex === index;
+  });
+
+  const ranked = dedupedByChainItem.map((rankedItem, index) => ({
     ...rankedItem,
     rank: index + 1,
     whyThisWorks: buildWhyThisWorks(rankedItem, input.calories),
@@ -85,4 +98,3 @@ export async function getRecommendations(input: SearchRecommendationsInput): Pro
     },
   };
 }
-

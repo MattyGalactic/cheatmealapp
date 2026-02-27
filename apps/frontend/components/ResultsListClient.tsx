@@ -38,6 +38,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const [sort, setSort] = useState<RecommendationSortKey>("best_match");
   const [selectedCravings, setSelectedCravings] = useState<CravingKey[]>([]);
   const [cravingMode, setCravingMode] = useState<CravingMatchMode>("all");
+  const [cravingsOpen, setCravingsOpen] = useState(false);
   const taggedResults = tagResultsWithCravings(data.results, calorieBudget);
   const filteredResults = filterByCravings(taggedResults, selectedCravings, cravingMode);
   const sortedResults = sortRecommendationResults(filteredResults, sort);
@@ -53,70 +54,83 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
 
   return (
     <>
-      <div className="sort-bar">
-        <label htmlFor="sort" className="sort-label">Sort</label>
-        <select
-          id="sort"
-          name="sort"
-          value={sort}
-          className="select"
-          onChange={(event) => setSort(event.target.value as RecommendationSortKey)}
+      <div className="filters-row">
+        <div className="sort-inline">
+          <span className="filters-text">Sort</span>
+          <select
+            id="sort"
+            name="sort"
+            value={sort}
+            className="select compact"
+            onChange={(event) => setSort(event.target.value as RecommendationSortKey)}
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          type="button"
+          className="cravings-toggle"
+          aria-expanded={cravingsOpen}
+          onClick={() => setCravingsOpen((open) => !open)}
         >
-          {SORT_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          <span className="filters-text">Cravings</span>
+          <span className={`chevron${cravingsOpen ? " open" : ""}`}>⌄</span>
+        </button>
       </div>
 
-      <section className="craving-panel" aria-label="Craving filters">
-        <div className="craving-panel-header">
-          <p className="sort-label">Craving</p>
-          <button
-            type="button"
-            className="clear-button"
-            onClick={() => setSelectedCravings([])}
-            disabled={selectedCravings.length === 0}
-          >
-            Clear
-          </button>
-        </div>
-        <div className="chip-wrap">
-          {CRAVING_OPTIONS.map((craving) => {
-            const selected = selectedCravings.includes(craving);
-            return (
-              <button
-                key={craving}
-                type="button"
-                className={`chip${selected ? " selected" : ""}`}
-                aria-pressed={selected}
-                onClick={() => toggleCraving(craving)}
-              >
-                {craving}
-              </button>
-            );
-          })}
-        </div>
-        <div className="mode-toggle" role="group" aria-label="Craving match mode">
-          <button
-            type="button"
-            className={`mode-option${cravingMode === "all" ? " active" : ""}`}
-            aria-pressed={cravingMode === "all"}
-            onClick={() => setCravingMode("all")}
-          >
-            Match All
-          </button>
-          <button
-            type="button"
-            className={`mode-option${cravingMode === "any" ? " active" : ""}`}
-            aria-pressed={cravingMode === "any"}
-            onClick={() => setCravingMode("any")}
-          >
-            Match Any
-          </button>
-        </div>
-      </section>
+      {cravingsOpen ? (
+        <section className="craving-panel" aria-label="Craving filters">
+          <div className="craving-panel-header">
+            <button
+              type="button"
+              className="clear-button"
+              onClick={() => setSelectedCravings([])}
+              disabled={selectedCravings.length === 0}
+            >
+              Clear
+            </button>
+          </div>
+          <div className="chip-wrap">
+            {CRAVING_OPTIONS.map((craving) => {
+              const selected = selectedCravings.includes(craving);
+              return (
+                <button
+                  key={craving}
+                  type="button"
+                  className={`chip${selected ? " selected" : ""}`}
+                  aria-pressed={selected}
+                  onClick={() => toggleCraving(craving)}
+                >
+                  {craving}
+                </button>
+              );
+            })}
+          </div>
+          <div className="mode-toggle" role="group" aria-label="Craving match mode">
+            <button
+              type="button"
+              className={`mode-option${cravingMode === "all" ? " active" : ""}`}
+              aria-pressed={cravingMode === "all"}
+              onClick={() => setCravingMode("all")}
+            >
+              Match All
+            </button>
+            <button
+              type="button"
+              className={`mode-option${cravingMode === "any" ? " active" : ""}`}
+              aria-pressed={cravingMode === "any"}
+              onClick={() => setCravingMode("any")}
+            >
+              Match Any
+            </button>
+          </div>
+        </section>
+      ) : null}
 
       {data.results.length === 0 ? (
         <p className="empty">No meals found under your calorie budget. Try a higher number.</p>
