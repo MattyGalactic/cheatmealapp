@@ -104,18 +104,31 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
 
   return (
     <>
-      <div className="filters-row flex flex-wrap items-center gap-3">
-        <div className="sort-inline sort-control">
-          <span className="filters-text sort-label">Sort</span>
-          <div className="sort-select-wrap">
-            <select
-              id="sort"
-              name="sort"
-              value={sort}
-              className="select compact sort-select w-auto max-w-[260px] min-w-[180px] min-w-0 max-w-full"
-              onChange={(event) => {
-                const nextSort = event.target.value as RecommendationSortKey;
-                setSort(nextSort);
+      <div className="filters-row">
+        <div
+          style={{
+            display: "flex",
+            minWidth: 0,
+            gap: "0.75rem",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <div
+            className="sort-inline sort-control"
+            style={{ flex: "1 1 auto", minWidth: 0, maxWidth: "100%" }}
+          >
+            <div className="sort-select-wrap" style={{ width: "100%", minWidth: 0, maxWidth: "100%" }}>
+              <select
+                id="sort"
+                name="sort"
+                value={sort}
+                aria-label="Sort"
+                className="select compact sort-select"
+                style={{ width: "100%", minWidth: "0", maxWidth: "100%" }}
+                onChange={(event) => {
+                  const nextSort = event.target.value as RecommendationSortKey;
+                  setSort(nextSort);
                 trackFilterChanged({ sortMode: nextSort });
               }}
             >
@@ -123,8 +136,33 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
-              ))}
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div
+            className="provider-inline provider-control"
+            style={{ flex: "0 0 9.5rem", width: "9.5rem", minWidth: "9.5rem", marginLeft: "auto" }}
+          >
+            <div className="provider-select-wrap" style={{ width: "100%", minWidth: 0, maxWidth: "100%" }}>
+            <select
+              id="provider"
+              name="provider"
+              value={provider ?? ""}
+              aria-label="Provider"
+              className="select compact provider-select"
+              style={{ width: "100%", minWidth: 0, maxWidth: "100%" }}
+              onChange={(event) => {
+                const nextProvider = event.target.value;
+                updateProvider(nextProvider === "doordash" || nextProvider === "ubereats" ? nextProvider : null);
+              }}
+            >
+              <option value="">Provider</option>
+              <option value="doordash">DoorDash</option>
+              <option value="ubereats">Uber Eats</option>
             </select>
+            </div>
           </div>
         </div>
 
@@ -137,26 +175,6 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
           <span className="filters-text">Cravings</span>
           <span className={`chevron${cravingsOpen ? " open" : ""}`}>v</span>
         </button>
-
-        <div className="provider-inline provider-control">
-          <span className="filters-text provider-label">Provider</span>
-          <div className="provider-select-wrap">
-            <select
-              id="provider"
-              name="provider"
-              value={provider ?? ""}
-              className="select compact provider-select"
-              onChange={(event) => {
-                const nextProvider = event.target.value;
-                updateProvider(nextProvider === "doordash" || nextProvider === "ubereats" ? nextProvider : null);
-              }}
-            >
-              <option value="">Select provider</option>
-              <option value="doordash">DoorDash</option>
-              <option value="ubereats">Uber Eats</option>
-            </select>
-          </div>
-        </div>
       </div>
 
       {cravingsOpen ? (
