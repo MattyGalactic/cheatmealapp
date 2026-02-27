@@ -14,7 +14,7 @@ export function getWhyThisWorksExplanation(input: ExplanationInput): string {
   const proteinGrams = input.proteinGrams ?? 0;
 
   if (!Number.isFinite(calories) || calories <= 0) {
-    return "Solid fit under your calorie budget.";
+    return "Fits your budget cleanly";
   }
 
   const proteinPer100Cal = proteinGrams / (calories / 100);
@@ -24,22 +24,22 @@ export function getWhyThisWorksExplanation(input: ExplanationInput): string {
     input.calorieBudget > 0 ? budgetGap / input.calorieBudget : Number.POSITIVE_INFINITY;
 
   if (proteinPer100Cal >= 8) {
-    return "High protein for the calories.";
+    return "High protein, low-calorie win";
   }
 
   if (withinBudget && underBudgetPct <= 0.1) {
-    return "Maximizes your budget without going over.";
+    return "Big flavor, stays in budget";
   }
 
   if (calories <= input.calorieBudget * 0.7 && proteinPer100Cal >= 5) {
-    return "Light but still protein-forward.";
+    return "Protein-forward, calorie-light";
   }
 
   if (input.isLowestCalorieBucket) {
-    return "Lowest-calorie option in this set.";
+    return "Lowest-calorie pick here";
   }
 
-  return "Solid fit under your calorie budget.";
+  return "Fits your budget cleanly";
 }
 
 export function buildWhyThisWorksMap(
@@ -71,4 +71,3 @@ export function buildWhyThisWorksMap(
     ]),
   );
 }
-
