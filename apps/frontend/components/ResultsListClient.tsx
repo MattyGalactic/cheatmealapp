@@ -71,7 +71,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
 
   return (
     <>
-      <div className="filters-row">
+      <div className="filters-row flex flex-wrap items-center gap-3">
         <div className="sort-inline sort-control">
           <span className="filters-text sort-label">Sort</span>
           <div className="sort-select-wrap">
@@ -79,7 +79,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
               id="sort"
               name="sort"
               value={sort}
-              className="select compact sort-select"
+              className="select compact sort-select w-auto max-w-[260px] min-w-[180px] min-w-0 max-w-full"
               onChange={(event) => {
                 const nextSort = event.target.value as RecommendationSortKey;
                 setSort(nextSort);
@@ -97,7 +97,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
 
         <button
           type="button"
-          className="cravings-toggle"
+          className="cravings-toggle w-auto"
           aria-expanded={cravingsOpen}
           onClick={() => setCravingsOpen((open) => !open)}
         >
