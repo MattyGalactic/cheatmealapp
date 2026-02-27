@@ -23,12 +23,11 @@ export function LandingSearchForm() {
       <input
         id="calories"
         name="calories"
-        type="number"
-        min={50}
-        max={2000}
+        type="text"
         required
         className="input"
         inputMode="numeric"
+        pattern="[0-9]*"
       />
       <button type="submit" className="button">Find My Meal</button>
     </form>
