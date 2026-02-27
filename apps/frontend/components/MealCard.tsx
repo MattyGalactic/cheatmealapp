@@ -43,33 +43,23 @@ export function MealCard({ result, whyThisWorks, calorieBudget }: MealCardProps)
   return (
     <article className="card card-clickable" onClick={trackResultClick}>
       <div className="card-top">
-        <div>
-          <p className="card-title">{result.restaurant.name}</p>
-          <p className="card-subtitle">{result.itemName}</p>
+        <div className="card-main">
+          <p className="item-name">{result.itemName}</p>
+          <p className="restaurant-name">{result.restaurant.name}</p>
         </div>
-        <div className="rank-badge">#{result.rank}</div>
+        <div className="card-right">
+          <p className="calories">{result.calories} cal</p>
+          <div className="rank-badge">#{result.rank}</div>
+        </div>
       </div>
 
-      <div className="metrics">
-        <div className="metric">
-          <span className="metric-label">Calories</span>
-          <span className="metric-value">{result.calories}</span>
-        </div>
-        <div className="metric">
-          <span className="metric-label">Protein</span>
-          <span className="metric-value">{result.proteinGrams}g</span>
-        </div>
-        <div className="metric">
-          <span className="metric-label">Price</span>
-          <span className="metric-value">
-            {typeof result.priceUsd === "number" ? `$${result.priceUsd.toFixed(2)}` : "N/A"}
-          </span>
-        </div>
-        <div className="metric">
-          <span className="metric-label">Score</span>
-          <span className="metric-value">{result.score}</span>
-        </div>
-      </div>
+      <p className="meta-line">
+        Protein {result.proteinGrams}g
+        <span className="dot">|</span>
+        Price {typeof result.priceUsd === "number" ? `$${result.priceUsd.toFixed(2)}` : "N/A"}
+        <span className="dot">|</span>
+        Score {result.score}
+      </p>
 
       <p className="why">
         <span className="why-label">Why this works:</span> {whyThisWorks ?? result.whyThisWorks}
@@ -104,3 +94,4 @@ export function MealCard({ result, whyThisWorks, calorieBudget }: MealCardProps)
     </article>
   );
 }
+

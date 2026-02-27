@@ -263,7 +263,7 @@ main {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 1rem;
+  padding: 1.15rem;
   box-shadow: var(--shadow);
 }
 
@@ -275,17 +275,37 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: start;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.card-title {
+.card-main {
+  min-width: 0;
+}
+
+.item-name {
   margin: 0;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.25;
 }
 
-.card-subtitle {
-  margin: 0.2rem 0 0;
+.restaurant-name {
+  margin: 0.3rem 0 0;
   color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.card-right {
+  display: grid;
+  justify-items: end;
+  gap: 0.45rem;
+}
+
+.calories {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
 .rank-badge {
@@ -299,46 +319,37 @@ main {
   font-weight: 700;
 }
 
-.metrics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin-top: 0.85rem;
-}
-
-.metric {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0.65rem;
-}
-
-.metric-label {
-  display: block;
-  font-size: 0.78rem;
+.meta-line {
+  margin: 0.9rem 0 0;
   color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
-.metric-value {
-  display: block;
-  margin-top: 0.2rem;
-  font-weight: 700;
+.dot {
+  display: inline-block;
+  margin: 0 0.35rem;
+  opacity: 0.7;
 }
 
 .why {
-  margin-top: 0.85rem;
+  margin-top: 1rem;
   color: var(--muted);
-  line-height: 1.4;
+  line-height: 1.2;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .why-label {
   color: var(--text);
-  opacity: 0.9;
-  font-weight: 600;
+  opacity: 0.75;
+  font-weight: 500;
 }
 
 .card-actions {
-  margin-top: 0.95rem;
+  margin-top: 1.05rem;
   display: flex;
   gap: 0.6rem;
 }
@@ -374,7 +385,7 @@ main {
     padding: 1.5rem;
   }
 
-  .metrics {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .item-name {
+    font-size: 1.12rem;
   }
 }
