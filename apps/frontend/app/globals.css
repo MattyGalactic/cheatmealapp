@@ -141,18 +141,18 @@ main {
 
 .results-page-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 48rem;
   margin: 0 auto;
   box-sizing: border-box;
   min-width: 0;
-  padding-left: calc(16px + env(safe-area-inset-left));
-  padding-right: calc(16px + env(safe-area-inset-right));
+  padding-left: calc(12px + env(safe-area-inset-left));
+  padding-right: calc(12px + env(safe-area-inset-right));
 }
 
 @media (min-width: 640px) {
   .results-page-container {
-    padding-left: calc(24px + env(safe-area-inset-left));
-    padding-right: calc(24px + env(safe-area-inset-right));
+    padding-left: calc(16px + env(safe-area-inset-left));
+    padding-right: calc(16px + env(safe-area-inset-right));
   }
 }
 
@@ -181,8 +181,9 @@ main {
 .filters-row {
   margin-top: 0.9rem;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
   min-width: 0;
 }
@@ -195,12 +196,12 @@ main {
 .sort-inline {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.55rem;
   min-width: 0;
   max-width: 100%;
-  flex: 1 1 100%;
-  width: 100%;
+  flex: 0 1 auto;
+  width: auto;
 }
 
 .filters-text {
@@ -211,15 +212,15 @@ main {
 }
 
 .sort-control {
-  width: 100%;
+  width: auto;
   min-width: 0;
-  max-width: 20rem;
+  max-width: 15rem;
 }
 
 .sort-select-wrap {
-  width: 100%;
+  width: auto;
   min-width: 0;
-  max-width: 20rem;
+  max-width: 15rem;
 }
 
 .sort-label {
@@ -252,17 +253,17 @@ main {
 }
 
 .select.compact {
-  min-width: 0;
-  max-width: 100%;
-  width: 100%;
+  min-width: 11.25rem;
+  max-width: 15rem;
+  width: auto;
   padding: 0.45rem 0.65rem;
   font-size: 0.85rem;
   border-radius: 9px;
 }
 
 .sort-select {
-  width: 100%;
-  max-width: 100%;
+  width: auto;
+  max-width: 15rem;
   min-width: 0;
 }
 
@@ -368,14 +369,14 @@ main {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  padding: 1.15rem;
+  padding: 1rem;
   box-shadow: var(--shadow);
 }
 
 .card-primary {
   border-color: rgba(255, 255, 255, 0.22);
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
-  padding: 1.3rem;
+  padding: 1.15rem;
 }
 
 .recommended-label {
@@ -603,26 +604,8 @@ main {
 }
 
 @media (min-width: 640px) {
-  .filters-row {
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .sort-control {
-    width: auto;
-    flex: 0 1 20rem;
-  }
-
   .sort-inline {
-    flex: 1 1 auto;
-    flex-wrap: nowrap;
-    width: auto;
-  }
-
-  .sort-select-wrap {
-    width: auto;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
   }
 
   .sort-select {
