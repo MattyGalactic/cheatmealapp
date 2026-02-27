@@ -353,6 +353,9 @@ main {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 1.15rem;
   box-shadow: var(--shadow);
 }
@@ -380,9 +383,12 @@ main {
   justify-content: space-between;
   align-items: start;
   gap: 1rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .card-main {
+  flex: 1 1 auto;
   min-width: 0;
 }
 
@@ -391,6 +397,9 @@ main {
   font-weight: 800;
   font-size: 1.1rem;
   line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .restaurant-name {
@@ -398,6 +407,9 @@ main {
   color: rgba(244, 244, 245, 0.84);
   font-size: 0.96rem;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .card-stats {
@@ -405,6 +417,7 @@ main {
   justify-items: end;
   gap: 0.28rem;
   text-align: right;
+  flex-shrink: 0;
 }
 
 .calories-main {
