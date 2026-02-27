@@ -17,6 +17,8 @@ export type MenuItemRecord = {
   name: string;
   calories: number;
   proteinGrams: number;
+  carbsGrams: number;
+  fatGrams: number;
   priceUsd?: number | null;
 };
 
@@ -25,6 +27,8 @@ export type RankingInputItem = {
   itemName: string;
   calories: number;
   proteinGrams: number;
+  carbsGrams: number;
+  fatGrams: number;
   priceUsd?: number | null;
   restaurant: RestaurantRecord;
 };

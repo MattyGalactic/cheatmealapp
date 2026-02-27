@@ -16,6 +16,8 @@ export type RecommendationsApiResponse = {
     itemName: string;
     calories: number;
     proteinGrams: number;
+    carbsGrams: number;
+    fatGrams: number;
     priceUsd?: number | null;
     restaurant: {
       id: string;

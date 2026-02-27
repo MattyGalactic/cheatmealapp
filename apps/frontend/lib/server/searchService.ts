@@ -30,6 +30,8 @@ async function loadFromDb(): Promise<{ restaurants: RestaurantRecord[]; menuItem
       name,
       calories,
       protein_grams AS "proteinGrams",
+      carbs_grams AS "carbsGrams",
+      fat_grams AS "fatGrams",
       price_usd AS "priceUsd"
     FROM menu_items
   `;
@@ -62,6 +64,8 @@ export async function getRecommendations(input: SearchRecommendationsInput): Pro
       itemName: candidate.name,
       calories: candidate.calories,
       proteinGrams: candidate.proteinGrams,
+      carbsGrams: candidate.carbsGrams,
+      fatGrams: candidate.fatGrams,
       priceUsd: candidate.priceUsd,
       restaurant: candidate.restaurant,
     })),

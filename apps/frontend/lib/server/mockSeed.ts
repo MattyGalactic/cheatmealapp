@@ -49,15 +49,42 @@ function slugify(value: string): string {
     .slice(0, 60);
 }
 
+function estimateMacros(name: string, calories: number, proteinGrams: number): { carbsGrams: number; fatGrams: number } {
+  const lowerName = name.toLowerCase();
+  const dessertLike = /(cookie|brownie|cake|muffin|pie|parfait|shake|mcflurry|custard|frosty|treat)/.test(lowerName);
+  const friedLike = /(fried|fries|crispy|breaded|nugget|finger|wing|sandwich|burger|pizza|quesadilla|mac|cheese)/.test(
+    lowerName,
+  );
+  const saladLike = /(salad|bowl|greens|veggie|vegetable|fruit|beans|grilled)/.test(lowerName);
+
+  let fatCaloriesRatio = 0.34;
+  if (dessertLike) fatCaloriesRatio = 0.3;
+  else if (friedLike) fatCaloriesRatio = 0.42;
+  else if (saladLike) fatCaloriesRatio = 0.26;
+
+  const proteinCalories = proteinGrams * 4;
+  const fatGrams = Math.max(1, Math.round((calories * fatCaloriesRatio) / 9));
+  const remainingCalories = Math.max(calories - proteinCalories - fatGrams * 9, 0);
+  const carbsGrams = Math.max(0, Math.round(remainingCalories / 4));
+
+  return { carbsGrams, fatGrams };
+}
+
 function menuItemsForRestaurant(restaurantId: string, tuples: MenuTuple[]): MenuItemRecord[] {
-  return tuples.map(([name, calories, proteinGrams, priceUsd], index) => ({
-    id: `${restaurantId}-${String(index + 1).padStart(2, "0")}-${slugify(name)}`,
-    restaurantId,
-    name,
-    calories,
-    proteinGrams,
-    priceUsd,
-  }));
+  return tuples.map(([name, calories, proteinGrams, priceUsd], index) => {
+    const { carbsGrams, fatGrams } = estimateMacros(name, calories, proteinGrams);
+
+    return {
+      id: `${restaurantId}-${String(index + 1).padStart(2, "0")}-${slugify(name)}`,
+      restaurantId,
+      name,
+      calories,
+      proteinGrams,
+      carbsGrams,
+      fatGrams,
+      priceUsd,
+    };
+  });
 }
 
 const menuProfiles: Record<ProfileKey, MenuTuple[]> = {

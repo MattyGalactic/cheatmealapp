@@ -15,6 +15,8 @@ type MealCardProps = {
     itemName: string;
     calories: number;
     proteinGrams: number;
+    carbsGrams?: number;
+    fatGrams?: number;
     priceUsd?: number | null;
     whyThisWorks: string;
     restaurant: {
@@ -50,6 +52,11 @@ export function MealCard({
   const [chooserOpen, setChooserOpen] = useState(false);
   const isPrimaryRecommendation = result.rank === 1;
   const rankPosition = displayedRank ?? result.rank;
+  const macroParts = [
+    typeof result.proteinGrams === "number" ? `${result.proteinGrams}P` : null,
+    typeof result.carbsGrams === "number" ? `${result.carbsGrams}C` : null,
+    typeof result.fatGrams === "number" ? `${result.fatGrams}F` : null,
+  ].filter(Boolean) as string[];
 
   const getMapsUrl = () =>
     buildGoogleMapsUrl({
@@ -136,7 +143,7 @@ export function MealCard({
       className={`card card-clickable${isPrimaryRecommendation ? " card-primary" : ""}`}
       onClick={trackResultClick}
     >
-      {isPrimaryRecommendation ? <p className="recommended-label">Recommended</p> : null}
+      {isPrimaryRecommendation ? <p className="recommended-label">RECOMMENDED</p> : null}
 
       <div className="card-top">
         <div className="card-main">
@@ -146,17 +153,19 @@ export function MealCard({
 
         <div className="card-stats">
           <p className="calories-main">{result.calories} cal</p>
-          <p className="protein-main">{result.proteinGrams}g protein</p>
+          {macroParts.length > 0 ? <p className="protein-main">{macroParts.join(" · ")}</p> : null}
         </div>
       </div>
 
       <div className="info-block">
-        <p className="macro-row">Reliability Score: {result.score}</p>
+        <p className="macro-row">
+          <span className="macro-label">Reliability</span>
+          <span className="macro-divider">&middot;</span>
+          <span className="macro-value">{result.score}</span>
+        </p>
       </div>
 
-      <p className="why">
-        <span className="why-label">Why this works:</span> {whyThisWorks ?? result.whyThisWorks}
-      </p>
+      <p className="why">{whyThisWorks ?? result.whyThisWorks}</p>
 
       <div className="card-footer">
         <div className="card-actions">
@@ -179,6 +188,14 @@ export function MealCard({
 
           {typeof result.restaurant.distanceMiles === "number" ? (
             <button type="button" className="link-button cta-secondary" onClick={handleDistanceClick}>
+              <span className="distance-icon" aria-hidden="true">
+                <svg viewBox="0 0 16 16" className="distance-svg">
+                  <path
+                    d="M8 1.5a4.25 4.25 0 0 0-4.25 4.25c0 3.02 3.1 6.73 4.25 7.97 1.15-1.24 4.25-4.95 4.25-7.97A4.25 4.25 0 0 0 8 1.5Zm0 5.8a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
               {result.restaurant.distanceMiles.toFixed(1)} mi
             </button>
           ) : null}
@@ -212,3 +229,4 @@ export function MealCard({
     </article>
   );
 }
+
