@@ -11,7 +11,9 @@
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -20,6 +22,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-x: clip;
   background:
     radial-gradient(circle at 15% 10%, rgba(255, 107, 53, 0.2), transparent 45%),
     radial-gradient(circle at 90% 0%, rgba(255, 140, 66, 0.14), transparent 40%),
@@ -127,6 +130,10 @@ main {
 
 .results-shell {
   padding: 1.5rem 0 3rem;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
 }
 
 .results-page-container {
@@ -134,12 +141,15 @@ main {
   max-width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
-  padding-inline: 1rem;
+  min-width: 0;
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
 }
 
 @media (min-width: 640px) {
   .results-page-container {
-    padding-inline: 1.5rem;
+    padding-left: max(1.5rem, env(safe-area-inset-left));
+    padding-right: max(1.5rem, env(safe-area-inset-right));
   }
 }
 
