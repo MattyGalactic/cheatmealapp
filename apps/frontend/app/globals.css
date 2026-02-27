@@ -19,6 +19,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 15% 10%, rgba(255, 107, 53, 0.2), transparent 45%),
     radial-gradient(circle at 90% 0%, rgba(255, 140, 66, 0.14), transparent 40%),
@@ -128,6 +129,12 @@ main {
   padding: 1.5rem 0 3rem;
 }
 
+.results-container {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
 .results-header {
   margin-bottom: 1rem;
 }
@@ -155,6 +162,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
@@ -163,6 +171,7 @@ main {
   align-items: center;
   gap: 0.55rem;
   min-width: 0;
+  flex: 1 1 14rem;
 }
 
 .filters-text {
@@ -183,6 +192,8 @@ main {
   align-items: center;
   gap: 0.35rem;
   cursor: pointer;
+  min-width: 0;
+  flex: 0 1 auto;
 }
 
 .chevron {
@@ -197,6 +208,7 @@ main {
 
 .select.compact {
   min-width: 150px;
+  max-width: 100%;
   padding: 0.45rem 0.65rem;
   font-size: 0.85rem;
   border-radius: 9px;

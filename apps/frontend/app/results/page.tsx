@@ -43,7 +43,7 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
 
   return (
     <main className="results-shell">
-      <div className="container">
+      <div className="container results-container">
         <header className="results-header">
           <p className="eyebrow">Cheat Meal</p>
           <p className="results-subtitle">
