@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MealCard } from "./MealCard";
 import type { RecommendationSortKey, RecommendationsApiResponse } from "../lib/api";
 import type { CravingKey, CravingMatchMode } from "../lib/cravings";
+import type { OrderProvider } from "../lib/orderLinks";
 import { emitEvent } from "../lib/events";
 import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
@@ -37,6 +38,7 @@ const CRAVING_OPTIONS: CravingKey[] = [
 
 export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsListClientProps) {
   const [sort, setSort] = useState<RecommendationSortKey>("best_match");
+  const [provider, setProvider] = useState<OrderProvider | null>(null);
   const [selectedCravings, setSelectedCravings] = useState<CravingKey[]>([]);
   const [cravingMode, setCravingMode] = useState<CravingMatchMode>("all");
   const [cravingsOpen, setCravingsOpen] = useState(false);
@@ -44,6 +46,37 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const filteredResults = filterByCravings(taggedResults, selectedCravings, cravingMode);
   const sortedResults = sortRecommendationResults(filteredResults, sort);
   const whyMap = buildWhyThisWorksMap(data.results, calorieBudget);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const value = window.localStorage.getItem("cm_order_provider");
+    setProvider(value === "doordash" || value === "ubereats" ? value : null);
+  }, []);
+
+  const updateProvider = (nextProvider: OrderProvider | null) => {
+    const previousProvider = provider;
+
+    if (typeof window !== "undefined") {
+      if (nextProvider) {
+        window.localStorage.setItem("cm_order_provider", nextProvider);
+      } else {
+        window.localStorage.removeItem("cm_order_provider");
+      }
+    }
+
+    setProvider(nextProvider);
+
+    if (previousProvider === nextProvider) {
+      return;
+    }
+
+    emitEvent({
+      event_name: "provider_changed",
+      calories_budget: calorieBudget,
+      provider: nextProvider,
+      previous_provider: previousProvider,
+    });
+  };
 
   const trackFilterChanged = (next: {
     cravingsSelected?: CravingKey[];
@@ -104,6 +137,26 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
           <span className="filters-text">Cravings</span>
           <span className={`chevron${cravingsOpen ? " open" : ""}`}>v</span>
         </button>
+
+        <div className="provider-inline provider-control">
+          <span className="filters-text provider-label">Provider</span>
+          <div className="provider-select-wrap">
+            <select
+              id="provider"
+              name="provider"
+              value={provider ?? ""}
+              className="select compact provider-select"
+              onChange={(event) => {
+                const nextProvider = event.target.value;
+                updateProvider(nextProvider === "doordash" || nextProvider === "ubereats" ? nextProvider : null);
+              }}
+            >
+              <option value="">Select provider</option>
+              <option value="doordash">DoorDash</option>
+              <option value="ubereats">Uber Eats</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       {cravingsOpen ? (
@@ -180,6 +233,8 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
               selectedCravings={selectedCravings}
               matchMode={cravingMode}
               sortMode={sort}
+              provider={provider}
+              onProviderSelected={updateProvider}
             />
           ))}
         </section>

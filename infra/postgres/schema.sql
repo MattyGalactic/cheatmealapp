@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS events (
   match_mode TEXT,
   sort_mode TEXT,
   provider TEXT,
+  previous_provider TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -44,6 +45,7 @@ ALTER TABLE events ADD COLUMN IF NOT EXISTS sort_mode TEXT;
 ALTER TABLE events ADD COLUMN IF NOT EXISTS restaurant_name TEXT;
 ALTER TABLE events ADD COLUMN IF NOT EXISTS item_name TEXT;
 ALTER TABLE events ADD COLUMN IF NOT EXISTS provider TEXT;
+ALTER TABLE events ADD COLUMN IF NOT EXISTS previous_provider TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_events_created_at ON events (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_events_event_name ON events (event_name);

@@ -11,7 +11,7 @@ const allowedEventNames = [
   "filter_changed",
   "order_clicked",
   "distance_clicked",
-  "change_provider_clicked",
+  "provider_changed",
 ] as const;
 const allowedProviders = ["doordash", "ubereats"] as const;
 const allowedMatchModes = ["all", "any"] as const;
@@ -29,6 +29,7 @@ const createEventSchema = z.object({
   match_mode: z.enum(allowedMatchModes).nullable().optional(),
   sort_mode: z.string().max(64).nullable().optional(),
   provider: z.enum(allowedProviders).nullable().optional(),
+  previous_provider: z.enum(allowedProviders).nullable().optional(),
 });
 
 const listQuerySchema = z.object({
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
       matchMode: payload.match_mode ?? null,
       sortMode: payload.sort_mode ?? null,
       provider: payload.provider ?? null,
+      previousProvider: payload.previous_provider ?? null,
     });
 
     return new NextResponse(null, { status: 204 });

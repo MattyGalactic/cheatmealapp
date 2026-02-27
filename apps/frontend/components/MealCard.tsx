@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import type { RecommendationSortKey } from "../lib/api";
 import type { CravingKey, CravingMatchMode } from "../lib/cravings";
 import type { OrderProvider } from "../lib/orderLinks";
@@ -32,6 +32,8 @@ type MealCardProps = {
   selectedCravings?: CravingKey[];
   matchMode?: CravingMatchMode;
   sortMode?: RecommendationSortKey;
+  provider: OrderProvider | null;
+  onProviderSelected: (provider: OrderProvider) => void;
 };
 
 export function MealCard({
@@ -42,32 +44,12 @@ export function MealCard({
   selectedCravings,
   matchMode,
   sortMode,
+  provider,
+  onProviderSelected,
 }: MealCardProps) {
   const [chooserOpen, setChooserOpen] = useState(false);
-  const [providerPickerIntent, setProviderPickerIntent] = useState<"order" | "change" | null>(null);
-  const [provider, setProvider] = useState<OrderProvider | null>(null);
   const isPrimaryRecommendation = result.rank === 1;
   const rankPosition = displayedRank ?? result.rank;
-
-  const readStoredProvider = (): OrderProvider | null => {
-    if (typeof window === "undefined") return null;
-    const value = window.localStorage.getItem("cm_order_provider");
-    return value === "doordash" || value === "ubereats" ? value : null;
-  };
-
-  const clearStoredProvider = () => {
-    if (typeof window === "undefined") return;
-    window.localStorage.removeItem("cm_order_provider");
-  };
-
-  const persistProvider = (nextProvider: OrderProvider) => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("cm_order_provider", nextProvider);
-  };
-
-  useEffect(() => {
-    setProvider(readStoredProvider());
-  }, []);
 
   const getMapsUrl = () =>
     buildGoogleMapsUrl({
@@ -115,7 +97,6 @@ export function MealCard({
   const handleOrderClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     if (!provider) {
-      setProviderPickerIntent("order");
       setChooserOpen(true);
       return;
     }
@@ -124,37 +105,9 @@ export function MealCard({
   };
 
   const handleProviderSelect = (nextProvider: OrderProvider) => {
-    persistProvider(nextProvider);
-    setProvider(nextProvider);
+    onProviderSelected(nextProvider);
     setChooserOpen(false);
-    if (providerPickerIntent === "order") {
-      openOrderForProvider(nextProvider);
-    }
-    setProviderPickerIntent(null);
-  };
-
-  const handleChangeProviderClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-
-    emitEvent({
-      event_name: "change_provider_clicked",
-      calories_budget: calorieBudget ?? null,
-      restaurant_id: result.restaurant.id,
-      restaurant_name: result.restaurant.name,
-      item_id: result.itemId,
-      item_name: result.itemName,
-      rank_position: rankPosition,
-      cravings_selected: selectedCravings ?? [],
-      match_mode: matchMode ?? null,
-      sort_mode: sortMode ?? null,
-      provider,
-    });
-
-    clearStoredProvider();
-    setProvider(null);
-    setChooserOpen(false);
-    setProviderPickerIntent("change");
-    setChooserOpen(true);
+    openOrderForProvider(nextProvider);
   };
 
   const handleDistanceClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -198,50 +151,38 @@ export function MealCard({
       </div>
 
       <div className="info-block">
-        <p className="macro-row">
-          Price {typeof result.priceUsd === "number" ? `$${result.priceUsd.toFixed(2)}` : "N/A"}
-          <span className="dot">|</span>
-          Rank #{result.rank}
-          <span className="macro-score">
-            <span className="dot">|</span>
-            Score {result.score}
-          </span>
-        </p>
+        <p className="macro-row">Reliability Score: {result.score}</p>
       </div>
 
       <p className="why">
         <span className="why-label">Why this works:</span> {whyThisWorks ?? result.whyThisWorks}
       </p>
 
-      <div className="card-actions">
-        <button type="button" className="link-button cta-primary" onClick={handleOrderClick}>
-          {provider ? (
-            <span className="provider-icon" aria-hidden="true">
-              {provider === "doordash" ? (
-                <svg viewBox="0 0 24 24" className="provider-svg">
-                  <path d="M3 8h8.8l3.2 4-3.2 4H3l3.2-4L3 8z" fill="currentColor" />
-                </svg>
-              ) : (
-                <svg viewBox="0 0 24 24" className="provider-svg">
-                  <path d="M4 9c0-1.7 1.3-3 3-3h10c1.7 0 3 1.3 3 3v6c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V9zm5.2 1.5h1.6v1.7h2.4v-1.7h1.6V15h-1.6v-1.6h-2.4V15H9.2v-4.5z" fill="currentColor" />
-                </svg>
-              )}
-            </span>
-          ) : null}
-          Order
-        </button>
-
-        {typeof result.restaurant.distanceMiles === "number" ? (
-          <button type="button" className="link-button" onClick={handleDistanceClick}>
-            {result.restaurant.distanceMiles.toFixed(1)} mi
-          </button>
-        ) : null}
-      </div>
-
       <div className="card-footer">
-        <button type="button" className="change-provider-link" onClick={handleChangeProviderClick}>
-          Change Provider
-        </button>
+        <div className="card-actions">
+          <button type="button" className="link-button cta-primary" onClick={handleOrderClick}>
+            {provider ? (
+              <span className="provider-icon" aria-hidden="true">
+                {provider === "doordash" ? (
+                  <svg viewBox="0 0 24 24" className="provider-svg">
+                    <path d="M3 8h8.8l3.2 4-3.2 4H3l3.2-4L3 8z" fill="currentColor" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" className="provider-svg">
+                    <path d="M4 9c0-1.7 1.3-3 3-3h10c1.7 0 3 1.3 3 3v6c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V9zm5.2 1.5h1.6v1.7h2.4v-1.7h1.6V15h-1.6v-1.6h-2.4V15H9.2v-4.5z" fill="currentColor" />
+                  </svg>
+                )}
+              </span>
+            ) : null}
+            Order
+          </button>
+
+          {typeof result.restaurant.distanceMiles === "number" ? (
+            <button type="button" className="link-button cta-secondary" onClick={handleDistanceClick}>
+              {result.restaurant.distanceMiles.toFixed(1)} mi
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {chooserOpen ? (

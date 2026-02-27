@@ -10,7 +10,7 @@ export type EventName =
   | "filter_changed"
   | "order_clicked"
   | "distance_clicked"
-  | "change_provider_clicked";
+  | "provider_changed";
 
 export type EventRecord = {
   id: string;
@@ -26,6 +26,7 @@ export type EventRecord = {
   matchMode: string | null;
   sortMode: string | null;
   provider: string | null;
+  previousProvider: string | null;
   createdAt: string;
 };
 
@@ -49,6 +50,7 @@ function normalizeEventRow(row: any): EventRecord {
     matchMode: row.matchMode ?? row.match_mode ?? null,
     sortMode: row.sortMode ?? row.sort_mode ?? null,
     provider: row.provider ?? null,
+    previousProvider: row.previousProvider ?? row.previous_provider ?? null,
     createdAt: new Date(row.createdAt ?? row.created_at ?? new Date()).toISOString(),
   };
 }
@@ -80,8 +82,8 @@ export async function createEvent(input: CreateEventInput): Promise<void> {
       await dbPool.query(
         `INSERT INTO events (
           id, event_name, session_id, calories_budget, restaurant_id, restaurant_name,
-          item_id, item_name, rank_position, cravings_selected, match_mode, sort_mode, provider, created_at
-        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)`,
+          item_id, item_name, rank_position, cravings_selected, match_mode, sort_mode, provider, previous_provider, created_at
+        ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)`,
         [
           event.id,
           event.eventName,
@@ -96,6 +98,7 @@ export async function createEvent(input: CreateEventInput): Promise<void> {
           event.matchMode,
           event.sortMode,
           event.provider,
+          event.previousProvider,
           event.createdAt,
         ],
       );
@@ -113,7 +116,7 @@ export async function listEvents(limit: number): Promise<EventRecord[]> {
     try {
       const result = await dbPool.query(
         `SELECT id, event_name, session_id, calories_budget, restaurant_id, restaurant_name,
-                item_id, item_name, rank_position, cravings_selected, match_mode, sort_mode, provider, created_at
+                item_id, item_name, rank_position, cravings_selected, match_mode, sort_mode, provider, previous_provider, created_at
          FROM events
          ORDER BY created_at DESC
          LIMIT $1`,

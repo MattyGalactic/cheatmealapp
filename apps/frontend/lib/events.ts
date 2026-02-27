@@ -8,7 +8,7 @@ export type ClientEventName =
   | "filter_changed"
   | "order_clicked"
   | "distance_clicked"
-  | "change_provider_clicked";
+  | "provider_changed";
 export type MatchMode = "all" | "any";
 export type Provider = "doordash" | "ubereats";
 
@@ -25,6 +25,7 @@ export type ClientEventPayload = {
   match_mode?: MatchMode | null;
   sort_mode?: string | null;
   provider?: Provider | null;
+  previous_provider?: Provider | null;
 };
 
 function canUseBrowserStorage(): boolean {
