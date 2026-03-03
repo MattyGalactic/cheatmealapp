@@ -115,32 +115,41 @@ export function ThemeSettings() {
 
         <section className="settings-section" aria-label="Appearance">
           <p className="settings-section-title">Appearance</p>
-          <label className="settings-option">
+          <label className={`settings-option settings-row${theme === "light" ? " selected" : ""}`}>
             <input
+              className="settings-radio"
               type="radio"
               name="appearance"
               value="light"
               checked={theme === "light"}
               onChange={() => setAndPersistTheme("light")}
             />
+            <span className="settings-row-check" aria-hidden="true">
+              {theme === "light" ? "✓" : ""}
+            </span>
             <span>Light</span>
           </label>
-          <label className="settings-option">
+          <label className={`settings-option settings-row${theme === "dark" ? " selected" : ""}`}>
             <input
+              className="settings-radio"
               type="radio"
               name="appearance"
               value="dark"
               checked={theme === "dark"}
               onChange={() => setAndPersistTheme("dark")}
             />
+            <span className="settings-row-check" aria-hidden="true">
+              {theme === "dark" ? "✓" : ""}
+            </span>
             <span>Dark</span>
           </label>
         </section>
 
         <section className="settings-section" aria-label="Accent">
           <p className="settings-section-title">Accent</p>
-          <label className="settings-option">
+          <label className={`settings-option settings-row settings-accent-row${accent === "classic" ? " selected" : ""}`}>
             <input
+              className="settings-radio"
               type="radio"
               name="accent"
               value="classic"
@@ -150,8 +159,9 @@ export function ThemeSettings() {
             <AccentDot tone={ACCENT_VALUES.classic.accent} selected={accent === "classic"} />
             <span>Classic</span>
           </label>
-          <label className="settings-option">
+          <label className={`settings-option settings-row settings-accent-row${accent === "focus" ? " selected" : ""}`}>
             <input
+              className="settings-radio"
               type="radio"
               name="accent"
               value="focus"
@@ -161,8 +171,9 @@ export function ThemeSettings() {
             <AccentDot tone={ACCENT_VALUES.focus.accent} selected={accent === "focus"} />
             <span>Focus</span>
           </label>
-          <label className="settings-option">
+          <label className={`settings-option settings-row settings-accent-row${accent === "balance" ? " selected" : ""}`}>
             <input
+              className="settings-radio"
               type="radio"
               name="accent"
               value="balance"
@@ -172,8 +183,9 @@ export function ThemeSettings() {
             <AccentDot tone={ACCENT_VALUES.balance.accent} selected={accent === "balance"} />
             <span>Balance</span>
           </label>
-          <label className="settings-option">
+          <label className={`settings-option settings-row settings-accent-row${accent === "stealth" ? " selected" : ""}`}>
             <input
+              className="settings-radio"
               type="radio"
               name="accent"
               value="stealth"
