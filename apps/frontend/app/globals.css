@@ -221,6 +221,89 @@ main {
   border-color: var(--secondary-btn-border);
 }
 
+.proof-section {
+  margin-top: 1.35rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.proof-header {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.proof-eyebrow {
+  margin: 0;
+  color: var(--brand-orange);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.proof-title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.proof-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.proof-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.proof-card {
+  background: linear-gradient(180deg, var(--card-bg), var(--surface-soft));
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 0.9rem 0.95rem;
+  box-shadow: var(--card-primary-shadow);
+}
+
+.proof-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.proof-calories {
+  color: var(--brand-orange);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.proof-restaurant {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.proof-items {
+  margin: 0.7rem 0 0;
+  padding-left: 1rem;
+  color: var(--text);
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+}
+
+.proof-rationale {
+  margin: 0.8rem 0 0;
+  color: var(--why-text);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
 .footer-note {
   margin-top: 1rem;
   color: var(--muted);
