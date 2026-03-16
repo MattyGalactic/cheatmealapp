@@ -157,15 +157,25 @@ export function MealCard({
         </div>
       </div>
 
-      <div className="info-block">
+      <div className="info-block info-block-inline">
         <p className="macro-row">
           <span className="macro-label">Reliability</span>
           <span className="macro-divider">&middot;</span>
           <span className="macro-value">{result.score}</span>
         </p>
+        {typeof result.priceUsd === "number" ? (
+          <p className="macro-row price-row">
+            <span className="macro-label">Est. price</span>
+            <span className="macro-divider">&middot;</span>
+            <span className="macro-value">${result.priceUsd.toFixed(2)}</span>
+          </p>
+        ) : null}
       </div>
 
-      <p className="why">{whyThisWorks ?? result.whyThisWorks}</p>
+      <div className="why-block">
+        <p className="why-label">Why this works</p>
+        <p className="why">{whyThisWorks ?? result.whyThisWorks}</p>
+      </div>
 
       <div className="card-footer">
         <div className="card-actions">

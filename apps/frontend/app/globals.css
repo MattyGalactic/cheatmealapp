@@ -721,6 +721,12 @@ main {
   margin-top: 1.05rem;
 }
 
+.info-block-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
 .macro-row {
   margin: 0;
   color: var(--macro-text);
@@ -728,6 +734,11 @@ main {
   font-weight: 400;
   line-height: 1.35;
   padding-bottom: 1px;
+}
+
+.price-row {
+  padding-left: 0.55rem;
+  border-left: 1px solid var(--card-border);
 }
 
 .macro-label {
@@ -750,15 +761,27 @@ main {
   opacity: 0.7;
 }
 
-.why {
+.why-block {
   margin-top: 1rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.why-label {
+  margin: 0;
+  color: var(--brand-orange);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.why {
+  margin: 0;
   color: var(--why-text);
-  line-height: 1.35;
-  font-size: 0.8rem;
+  line-height: 1.4;
+  font-size: 0.84rem;
   font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   padding-bottom: 1px;
 }
 
