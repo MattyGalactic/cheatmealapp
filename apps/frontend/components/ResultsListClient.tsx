@@ -46,6 +46,8 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const filteredResults = filterByCravings(taggedResults, selectedCravings, cravingMode);
   const sortedResults = sortRecommendationResults(filteredResults, sort);
   const whyMap = buildWhyThisWorksMap(data.results, calorieBudget);
+  const topPick = sortedResults[0];
+  const topPickWhy = topPick ? whyMap.get(topPick.itemId) ?? topPick.whyThisWorks : null;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -240,22 +242,38 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       ) : filteredResults.length === 0 ? (
         <p className="empty">No matches for this craving combo. Try Match Any.</p>
       ) : (
-        <section className="results-grid" aria-label="Recommended meals">
-          {sortedResults.map((result, index) => (
-            <MealCard
-              key={result.itemId}
-              result={result}
-              whyThisWorks={whyMap.get(result.itemId)}
-              calorieBudget={calorieBudget}
-              displayedRank={index + 1}
-              selectedCravings={selectedCravings}
-              matchMode={cravingMode}
-              sortMode={sort}
-              provider={provider}
-              onProviderSelected={updateProvider}
-            />
-          ))}
-        </section>
+        <>
+          {topPick ? (
+            <section className="hero-pick" aria-label="Top recommendation">
+              <p className="hero-pick-eyebrow">Top pick</p>
+              <div className="hero-pick-row">
+                <div>
+                  <p className="hero-pick-title">{topPick.itemName}</p>
+                  <p className="hero-pick-subtitle">{topPick.restaurant.name}</p>
+                </div>
+                <p className="hero-pick-calories">{topPick.calories} cal</p>
+              </div>
+              <p className="hero-pick-why">{topPickWhy}</p>
+            </section>
+          ) : null}
+
+          <section className="results-grid" aria-label="Recommended meals">
+            {sortedResults.map((result, index) => (
+              <MealCard
+                key={result.itemId}
+                result={result}
+                whyThisWorks={whyMap.get(result.itemId)}
+                calorieBudget={calorieBudget}
+                displayedRank={index + 1}
+                selectedCravings={selectedCravings}
+                matchMode={cravingMode}
+                sortMode={sort}
+                provider={provider}
+                onProviderSelected={updateProvider}
+              />
+            ))}
+          </section>
+        </>
       )}
 
       <nav className="pagination" aria-label="Pagination">

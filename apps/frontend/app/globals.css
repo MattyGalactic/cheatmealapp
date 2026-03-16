@@ -351,6 +351,62 @@ main {
   font-size: 0.95rem;
 }
 
+.hero-pick {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1.05rem;
+  border-radius: 18px;
+  border: 1px solid var(--card-primary-border);
+  background: linear-gradient(180deg, var(--card-bg), var(--surface-strong));
+  box-shadow: var(--card-primary-shadow);
+}
+
+.hero-pick-eyebrow {
+  margin: 0;
+  color: var(--brand-orange);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero-pick-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hero-pick-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.hero-pick-subtitle {
+  margin: 0.15rem 0 0;
+  color: var(--restaurant-text);
+  font-size: 0.95rem;
+}
+
+.hero-pick-calories {
+  margin: 0;
+  white-space: nowrap;
+  color: var(--brand-orange);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.hero-pick-why {
+  margin: 0;
+  color: var(--why-text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
 .results-grid {
   display: grid;
   gap: 0.9rem;

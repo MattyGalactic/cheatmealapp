@@ -46,8 +46,9 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
       <div className="results-page-container">
         <header className="results-header">
           <p className="eyebrow">Cheat Meal</p>
+          <h1 className="results-title">Spend your last {calories} calories wisely.</h1>
           <p className="results-subtitle">
-            Spend your last {calories} calories wisely.
+            One strong move beats a dozen mediocre ones.
           </p>
           <p className="results-subtitle">
             Nashville pilot. National chains within 10 miles. <Link href="/">Adjust calories</Link>
