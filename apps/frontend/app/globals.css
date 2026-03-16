@@ -429,12 +429,19 @@ main {
 .hero-pick {
   margin-top: 1rem;
   display: grid;
-  gap: 0.45rem;
-  padding: 1rem 1.05rem;
-  border-radius: 18px;
+  gap: 0.55rem;
+  padding: 1.05rem 1.1rem;
+  border-radius: 20px;
   border: 1px solid var(--card-primary-border);
   background: linear-gradient(180deg, var(--card-bg), var(--surface-strong));
   box-shadow: var(--card-primary-shadow);
+}
+
+.hero-pick-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .hero-pick-eyebrow {
@@ -444,6 +451,17 @@ main {
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.hero-pick-badge {
+  margin: 0;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 122, 26, 0.12);
+  border: 1px solid rgba(255, 122, 26, 0.22);
+  color: var(--brand-orange);
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .hero-pick-row {
@@ -482,10 +500,19 @@ main {
   line-height: 1.45;
 }
 
+.results-section-label {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 .results-grid {
   display: grid;
   gap: 0.9rem;
-  margin-top: 1.35rem;
+  margin-top: 0.75rem;
 }
 
 .filters-row {

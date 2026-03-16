@@ -245,7 +245,10 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
         <>
           {topPick ? (
             <section className="hero-pick" aria-label="Top recommendation">
-              <p className="hero-pick-eyebrow">Top pick</p>
+              <div className="hero-pick-header">
+                <p className="hero-pick-eyebrow">Top pick</p>
+                <p className="hero-pick-badge">Best move right now</p>
+              </div>
               <div className="hero-pick-row">
                 <div>
                   <p className="hero-pick-title">{topPick.itemName}</p>
@@ -256,6 +259,8 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
               <p className="hero-pick-why">{topPickWhy}</p>
             </section>
           ) : null}
+
+          <p className="results-section-label">More options</p>
 
           <section className="results-grid" aria-label="Recommended meals">
             {sortedResults.map((result, index) => (
