@@ -1,4 +1,5 @@
 import { LandingSearchForm } from "../components/LandingSearchForm";
+import { HomeAnalytics } from "../components/HomeAnalytics";
 
 const EXAMPLE_MEALS = [
   {
@@ -36,6 +37,7 @@ const EXAMPLE_MEALS = [
 export default function HomePage() {
   return (
     <main className="hero">
+      <HomeAnalytics />
       <div className="container">
         <section className="hero-card" aria-labelledby="cheatmeal-title">
           <div className="hero-copy">
