@@ -27,7 +27,6 @@ export default function HomePage() {
       <div className="container">
         <section className="hero-card" aria-labelledby="cheatmeal-title">
           <div className="hero-copy">
-            <p className="brand-kicker">Late-night decision engine</p>
             <p className="brand" id="cheatmeal-title">Cheat Meal</p>
             <p className="tagline">Strategic indulgence for the calories you actually have left.</p>
             <p className="hero-support">
@@ -42,7 +41,7 @@ export default function HomePage() {
               <p className="proof-eyebrow">Example recommendations</p>
               <h2 className="proof-title" id="example-meals-title">What a great answer looks like</h2>
               <p className="proof-copy">
-                Cheat Meal is built to give you one strong move, not a pile of menu data to sort through when you're tired and hungry.
+                Built to recommend one genuinely satisfying move fast — not dump a wall of menu data on you when you're already hungry.
               </p>
             </div>
 
@@ -61,6 +60,7 @@ export default function HomePage() {
                   </ul>
 
                   <p className="proof-rationale">{meal.rationale}</p>
+                  <p className="proof-note">Exact menu combinations like this are what Cheat Meal is built to surface.</p>
                 </article>
               ))}
             </div>

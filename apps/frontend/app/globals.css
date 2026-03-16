@@ -327,6 +327,13 @@ main {
   font-weight: 600;
 }
 
+.proof-note {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.79rem;
+  line-height: 1.45;
+}
+
 .footer-note {
   margin-top: 1rem;
   color: var(--muted);
