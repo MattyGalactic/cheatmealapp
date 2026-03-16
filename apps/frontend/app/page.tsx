@@ -2,20 +2,32 @@ import { LandingSearchForm } from "../components/LandingSearchForm";
 
 const EXAMPLE_MEALS = [
   {
-    calories: 620,
+    itemName: "Grilled nuggets + fries",
     restaurant: "Chick-fil-A",
+    calories: 620,
+    protein: 38,
+    carbs: 52,
+    fat: 24,
     items: ["8-count grilled nuggets", "medium waffle fries", "diet lemonade"],
     rationale: "Best balanced indulgence under budget",
   },
   {
-    calories: 740,
+    itemName: "Quesadilla late-night combo",
     restaurant: "Taco Bell",
+    calories: 740,
+    protein: 28,
+    carbs: 74,
+    fat: 36,
     items: ["chicken quesadilla", "bean burrito", "Baja Blast Zero"],
     rationale: "Most satisfying late-night option under 750",
   },
   {
-    calories: 690,
+    itemName: "Big bowl + chips combo",
     restaurant: "Chipotle",
+    calories: 690,
+    protein: 35,
+    carbs: 68,
+    fat: 28,
     items: ["chicken burrito bowl", "chips", "diet soda"],
     rationale: "Biggest portion without blowing the day",
   },
@@ -41,20 +53,28 @@ export default function HomePage() {
 
             <div className="proof-grid">
               {EXAMPLE_MEALS.map((meal) => (
-                <article key={`${meal.restaurant}-${meal.calories}`} className="proof-card">
-                  <div className="proof-card-topline">
-                    <span className="proof-calories">{meal.calories} cal</span>
-                    <span className="proof-restaurant">{meal.restaurant}</span>
+                <details key={`${meal.restaurant}-${meal.calories}`} className="proof-card">
+                  <summary className="proof-summary">
+                    <div className="proof-summary-copy">
+                      <p className="proof-item-name">{meal.itemName}</p>
+                      <p className="proof-restaurant">{meal.restaurant}</p>
+                    </div>
+                    <div className="proof-summary-meta">
+                      <span className="proof-calories">{meal.calories} cal</span>
+                      <span className="proof-macros">P {meal.protein} · C {meal.carbs} · F {meal.fat}</span>
+                    </div>
+                  </summary>
+
+                  <div className="proof-expanded">
+                    <ul className="proof-items">
+                      {meal.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+
+                    <p className="proof-rationale">{meal.rationale}</p>
                   </div>
-
-                  <ul className="proof-items">
-                    {meal.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-
-                  <p className="proof-rationale">{meal.rationale}</p>
-                </article>
+                </details>
               ))}
             </div>
           </div>

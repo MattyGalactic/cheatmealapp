@@ -293,15 +293,42 @@ main {
   background: linear-gradient(180deg, var(--card-bg), var(--surface-soft));
   border: 1px solid var(--card-border);
   border-radius: 16px;
-  padding: 0.9rem 0.95rem;
+  padding: 0.25rem;
   box-shadow: var(--card-primary-shadow);
 }
 
-.proof-card-topline {
+.proof-summary {
+  list-style: none;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.9rem;
+  cursor: pointer;
+  padding: 0.75rem 0.8rem;
+  border-radius: 14px;
+}
+
+.proof-summary::-webkit-details-marker {
+  display: none;
+}
+
+.proof-summary-copy {
+  display: grid;
+  gap: 0.22rem;
+}
+
+.proof-item-name {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.98rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.proof-summary-meta {
+  display: grid;
+  justify-items: end;
+  gap: 0.2rem;
 }
 
 .proof-calories {
@@ -312,14 +339,25 @@ main {
   text-transform: uppercase;
 }
 
+.proof-macros {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 .proof-restaurant {
-  color: var(--text);
-  font-size: 0.95rem;
+  margin: 0;
+  color: var(--restaurant-text);
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
+.proof-expanded {
+  padding: 0 0.8rem 0.8rem;
+}
+
 .proof-items {
-  margin: 0.7rem 0 0;
+  margin: 0.2rem 0 0;
   padding-left: 1rem;
   color: var(--text);
   display: grid;
