@@ -28,13 +28,16 @@ export default function HomePage() {
         <section className="hero-card" aria-labelledby="cheatmeal-title">
           <div className="hero-copy">
             <p className="brand" id="cheatmeal-title">Cheat Meal</p>
-            <p className="tagline">Strategic indulgence for the calories you actually have left.</p>
+            <h1 className="hero-title">Find the smartest indulgence for the calories you have left.</h1>
             <p className="hero-support">
-              Find the most satisfying fast-food move that still fits the day — without doing regret math in your head.
+              Skip the menu spiral. Get one strong fast-food move that still fits the day.
             </p>
           </div>
 
-          <LandingSearchForm />
+          <div className="hero-action-block">
+            <LandingSearchForm />
+            <p className="hero-action-note">Start with your remaining calories and let Cheat Meal do the hard part.</p>
+          </div>
 
           <div className="proof-section" aria-labelledby="example-meals-title">
             <div className="proof-header">

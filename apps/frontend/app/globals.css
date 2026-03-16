@@ -147,25 +147,26 @@ main {
 
 .hero-copy {
   display: grid;
-  gap: 0.45rem;
-  margin-bottom: 1.1rem;
-}
-
-.brand-kicker {
-  margin: 0;
-  color: var(--brand-orange);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  gap: 0.55rem;
+  margin-bottom: 1.2rem;
 }
 
 .brand {
-  font-size: 1.9rem;
-  font-weight: 900;
-  letter-spacing: 0.01em;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   margin: 0;
   color: var(--brand-orange);
+}
+
+.hero-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 900;
+  max-width: 12ch;
 }
 
 .eyebrow {
@@ -177,19 +178,25 @@ main {
   text-transform: uppercase;
 }
 
-.tagline {
-  margin: 0.2rem 0 0;
-  color: var(--text);
-  font-size: 1.15rem;
-  font-weight: 700;
-  line-height: 1.35;
+.hero-support {
+  margin: 0.15rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+  max-width: 36ch;
 }
 
-.hero-support {
-  margin: 0.2rem 0 0;
+.hero-action-block {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.2rem;
+}
+
+.hero-action-note {
+  margin: 0;
   color: var(--muted);
-  font-size: 0.96rem;
-  line-height: 1.5;
+  font-size: 0.85rem;
+  line-height: 1.45;
 }
 
 .form-grid {
