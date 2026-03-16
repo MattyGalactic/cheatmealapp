@@ -29,23 +29,14 @@ export default function HomePage() {
           <div className="hero-copy">
             <p className="brand" id="cheatmeal-title">Cheat Meal</p>
             <h1 className="hero-title">Find the smartest indulgence for the calories you have left.</h1>
-            <p className="hero-support">
-              Skip the menu spiral. Get one strong fast-food move that still fits the day.
-            </p>
           </div>
 
-          <div className="hero-action-block">
-            <LandingSearchForm />
-            <p className="hero-action-note">Start with your remaining calories and let Cheat Meal do the hard part.</p>
-          </div>
+          <LandingSearchForm />
 
           <div className="proof-section" aria-labelledby="example-meals-title">
             <div className="proof-header">
               <p className="proof-eyebrow">Example recommendations</p>
               <h2 className="proof-title" id="example-meals-title">What a great answer looks like</h2>
-              <p className="proof-copy">
-                Built to recommend one genuinely satisfying move fast — not dump a wall of menu data on you when you're already hungry.
-              </p>
             </div>
 
             <div className="proof-grid">
@@ -63,7 +54,6 @@ export default function HomePage() {
                   </ul>
 
                   <p className="proof-rationale">{meal.rationale}</p>
-                  <p className="proof-note">Exact menu combinations like this are what Cheat Meal is built to surface.</p>
                 </article>
               ))}
             </div>
