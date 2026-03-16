@@ -26,8 +26,14 @@ export default function HomePage() {
     <main className="hero">
       <div className="container">
         <section className="hero-card" aria-labelledby="cheatmeal-title">
-          <p className="brand" id="cheatmeal-title">Cheat Meal</p>
-          <p className="tagline">Strategic indulgence for the calories you actually have left.</p>
+          <div className="hero-copy">
+            <p className="brand-kicker">Late-night decision engine</p>
+            <p className="brand" id="cheatmeal-title">Cheat Meal</p>
+            <p className="tagline">Strategic indulgence for the calories you actually have left.</p>
+            <p className="hero-support">
+              Find the most satisfying fast-food move that still fits the day — without doing regret math in your head.
+            </p>
+          </div>
 
           <LandingSearchForm />
 
