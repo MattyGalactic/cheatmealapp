@@ -906,41 +906,43 @@ main {
 }
 
 .info-block {
-  margin-top: 1.05rem;
+  margin-top: 0.78rem;
 }
 
 .info-block-inline {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.48rem;
+  align-items: center;
+  padding-left: 0.1rem;
 }
 
 .macro-row {
   margin: 0;
-  color: var(--macro-text);
-  font-size: 0.82rem;
-  font-weight: 400;
-  line-height: 1.35;
+  color: color-mix(in oklab, var(--macro-text) 82%, var(--muted));
+  font-size: 0.76rem;
+  font-weight: 430;
+  line-height: 1.3;
   padding-bottom: 1px;
 }
 
 .price-row {
-  padding-left: 0.55rem;
-  border-left: 1px solid var(--card-border);
+  padding-left: 0.48rem;
+  border-left: 1px solid color-mix(in oklab, var(--card-border) 85%, var(--muted));
 }
 
 .macro-label {
-  color: var(--macro-label);
+  color: color-mix(in oklab, var(--macro-label) 90%, var(--muted));
 }
 
 .macro-divider {
-  margin: 0 0.3rem;
-  color: var(--macro-divider);
+  margin: 0 0.28rem;
+  color: color-mix(in oklab, var(--macro-divider) 92%, transparent);
 }
 
 .macro-value {
-  color: var(--macro-value);
-  font-weight: 500;
+  color: color-mix(in oklab, var(--macro-value) 88%, var(--muted));
+  font-weight: 470;
 }
 
 .dot {
@@ -959,22 +961,37 @@ main {
   margin-top: 0.75rem;
 }
 
+.why-block-expanded {
+  margin-top: 0.9rem;
+  gap: 0.42rem;
+  padding: 0.72rem 0.8rem 0.78rem;
+  border-radius: 10px;
+  border: 1px solid color-mix(in oklab, var(--border) 80%, var(--brand-orange));
+  background: color-mix(in oklab, var(--panel) 84%, var(--surface-soft));
+}
+
 .why-label {
   margin: 0;
-  color: var(--brand-orange);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  color: color-mix(in oklab, var(--brand-orange) 84%, var(--text));
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
 .why {
   margin: 0;
   color: var(--why-text);
-  line-height: 1.4;
+  line-height: 1.42;
   font-size: 0.84rem;
   font-weight: 500;
   padding-bottom: 1px;
+}
+
+.why-expanded {
+  line-height: 1.48;
+  font-size: 0.88rem;
+  font-weight: 520;
 }
 
 .card-expand-hint {
@@ -1113,7 +1130,9 @@ main {
 }
 
 .card-footer {
-  margin-top: 1.05rem;
+  margin-top: 1.22rem;
+  padding-top: 0.72rem;
+  border-top: 1px solid color-mix(in oklab, var(--card-border) 82%, transparent);
 }
 
 .chooser-option {

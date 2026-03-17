@@ -190,8 +190,9 @@ export function MealCard({
         </div>
       </div>
 
-      <div className="why-block why-block-compact">
-        <p className="why">{expanded ? reason : compactReason(reason)}</p>
+      <div className={`why-block ${expanded ? "why-block-expanded" : "why-block-compact"}`}>
+        {expanded ? <p className="why-label">Why this works</p> : null}
+        <p className={`why${expanded ? " why-expanded" : ""}`}>{expanded ? reason : compactReason(reason)}</p>
       </div>
 
       <div className="card-expand-hint" aria-hidden="true">
