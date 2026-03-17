@@ -38,12 +38,6 @@ type MealCardProps = {
   onProviderSelected: (provider: OrderProvider) => void;
 };
 
-function compactReason(text: string): string {
-  const normalized = text.trim();
-  if (normalized.length <= 98) return normalized;
-  return `${normalized.slice(0, 95).trimEnd()}...`;
-}
-
 export function MealCard({
   result,
   whyThisWorks,
@@ -190,10 +184,12 @@ export function MealCard({
         </div>
       </div>
 
-      <div className={`why-block ${expanded ? "why-block-expanded" : "why-block-compact"}`}>
-        {expanded ? <p className="why-label">Why this works</p> : null}
-        <p className={`why${expanded ? " why-expanded" : ""}`}>{expanded ? reason : compactReason(reason)}</p>
-      </div>
+      {expanded ? (
+        <div className="why-block why-block-expanded">
+          <p className="why-label">Why this works</p>
+          <p className="why why-expanded">{reason}</p>
+        </div>
+      ) : null}
 
       <div className="card-expand-hint" aria-hidden="true">
         <span className={`expand-chevron${expanded ? " open" : ""}`}>⌄</span>
