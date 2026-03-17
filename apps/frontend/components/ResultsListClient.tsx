@@ -275,6 +275,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
                 <p className="hero-pick-calories">{topPick.calories} cal</p>
               </div>
               <p className="hero-pick-why">{topPickWhy}</p>
+              <p className="hero-pick-trust">Picked for the best balance of satisfaction, calorie fit, and recommendation quality under your budget.</p>
             </section>
           ) : null}
 
