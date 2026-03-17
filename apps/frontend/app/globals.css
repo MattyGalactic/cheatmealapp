@@ -944,25 +944,21 @@ main {
 .card-expand-hint {
   position: absolute;
   right: 0.95rem;
-  bottom: 0.9rem;
+  bottom: 0.95rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  border-radius: 999px;
-  border: 1px solid var(--card-border);
-  background: color-mix(in oklab, var(--panel) 92%, transparent);
-  color: var(--muted);
-  box-shadow: 0 4px 12px color-mix(in oklab, var(--card-primary-shadow) 22%, transparent);
+  color: color-mix(in oklab, var(--muted) 88%, var(--text));
+  pointer-events: none;
 }
 
 .expand-chevron {
   display: inline-block;
-  font-size: 0.95rem;
+  font-size: 1rem;
   line-height: 1;
-  transition: transform 140ms ease;
+  transition: transform 140ms ease, color 140ms ease, opacity 140ms ease;
   transform: rotate(0deg);
+  opacity: 0.82;
 }
 
 .expand-chevron.open {
