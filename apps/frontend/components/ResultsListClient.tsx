@@ -238,9 +238,15 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       ) : null}
 
       {data.results.length === 0 ? (
-        <p className="empty">No meals found under your calorie budget. Try a higher number.</p>
+        <section className="empty-state" aria-label="No meals found">
+          <p className="empty-state-title">Nothing fits that calorie target yet.</p>
+          <p className="empty">Try a slightly higher number and we’ll give you a better shot at a satisfying option.</p>
+        </section>
       ) : filteredResults.length === 0 ? (
-        <p className="empty">No matches for this craving combo. Try Match Any.</p>
+        <section className="empty-state" aria-label="No craving matches found">
+          <p className="empty-state-title">Nothing matches that craving combo.</p>
+          <p className="empty">Try switching to Match Any or clear a craving to bring strong options back.</p>
+        </section>
       ) : (
         <>
           {topPick ? (
