@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useState, type KeyboardEvent, type MouseEvent } from "react";
 import type { RecommendationSortKey } from "../lib/api";
 import type { CravingKey, CravingMatchMode } from "../lib/cravings";
 import type { OrderProvider } from "../lib/orderLinks";
@@ -38,6 +38,12 @@ type MealCardProps = {
   onProviderSelected: (provider: OrderProvider) => void;
 };
 
+function compactReason(text: string): string {
+  const normalized = text.trim();
+  if (normalized.length <= 98) return normalized;
+  return `${normalized.slice(0, 95).trimEnd()}...`;
+}
+
 export function MealCard({
   result,
   whyThisWorks,
@@ -50,6 +56,7 @@ export function MealCard({
   onProviderSelected,
 }: MealCardProps) {
   const [chooserOpen, setChooserOpen] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const isPrimaryRecommendation = result.rank === 1;
   const rankPosition = displayedRank ?? result.rank;
   const macroParts = [
@@ -57,6 +64,7 @@ export function MealCard({
     typeof result.carbsGrams === "number" ? `${result.carbsGrams}C` : null,
     typeof result.fatGrams === "number" ? `${result.fatGrams}F` : null,
   ].filter(Boolean) as string[];
+  const reason = whyThisWorks ?? result.whyThisWorks;
 
   const getMapsUrl = () =>
     buildGoogleMapsUrl({
@@ -138,10 +146,35 @@ export function MealCard({
     });
   };
 
+  const toggleExpanded = () => {
+    setExpanded((current) => {
+      const next = !current;
+      if (next) {
+        trackResultClick();
+      }
+      if (!next) {
+        setChooserOpen(false);
+      }
+      return next;
+    });
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleExpanded();
+    }
+  };
+
   return (
     <article
-      className={`card card-clickable${isPrimaryRecommendation ? " card-primary" : ""}`}
-      onClick={trackResultClick}
+      className={`card card-clickable card-collapsible${isPrimaryRecommendation ? " card-primary" : ""}${expanded ? " card-expanded" : " card-collapsed"}`}
+      onClick={toggleExpanded}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-expanded={expanded}
+      aria-label={`${result.itemName} from ${result.restaurant.name}`}
     >
       {isPrimaryRecommendation ? <p className="recommended-label">RECOMMENDED</p> : null}
 
@@ -157,86 +190,93 @@ export function MealCard({
         </div>
       </div>
 
-      <div className="info-block info-block-inline">
-        <p className="macro-row">
-          <span className="macro-label">Reliability</span>
-          <span className="macro-divider">&middot;</span>
-          <span className="macro-value">{result.score}</span>
-        </p>
-        {typeof result.priceUsd === "number" ? (
-          <p className="macro-row price-row">
-            <span className="macro-label">Est. price</span>
-            <span className="macro-divider">&middot;</span>
-            <span className="macro-value">${result.priceUsd.toFixed(2)}</span>
-          </p>
-        ) : null}
+      <div className="why-block why-block-compact">
+        <p className="why">{expanded ? reason : compactReason(reason)}</p>
       </div>
 
-      <div className="why-block">
-        <p className="why-label">Why this works</p>
-        <p className="why">{whyThisWorks ?? result.whyThisWorks}</p>
+      <div className="card-expand-hint" aria-hidden="true">
+        <span>{expanded ? "Tap to collapse" : "Tap to expand"}</span>
+        <span className={`expand-chevron${expanded ? " open" : ""}`}>⌄</span>
       </div>
 
-      <div className="card-footer">
-        <div className="card-actions">
-          <button type="button" className="link-button cta-primary" onClick={handleOrderClick}>
-            {provider ? (
-              <span className="provider-icon" aria-hidden="true">
-                {provider === "doordash" ? (
-                  <svg viewBox="0 0 24 24" className="provider-svg">
-                    <path d="M3 8h8.8l3.2 4-3.2 4H3l3.2-4L3 8z" fill="currentColor" />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" className="provider-svg">
-                    <path d="M4 9c0-1.7 1.3-3 3-3h10c1.7 0 3 1.3 3 3v6c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V9zm5.2 1.5h1.6v1.7h2.4v-1.7h1.6V15h-1.6v-1.6h-2.4V15H9.2v-4.5z" fill="currentColor" />
-                  </svg>
-                )}
-              </span>
+      {expanded ? (
+        <>
+          <div className="info-block info-block-inline">
+            <p className="macro-row">
+              <span className="macro-label">Reliability</span>
+              <span className="macro-divider">&middot;</span>
+              <span className="macro-value">{result.score}</span>
+            </p>
+            {typeof result.priceUsd === "number" ? (
+              <p className="macro-row price-row">
+                <span className="macro-label">Est. price</span>
+                <span className="macro-divider">&middot;</span>
+                <span className="macro-value">${result.priceUsd.toFixed(2)}</span>
+              </p>
             ) : null}
-            Order
-          </button>
+          </div>
 
-          {typeof result.restaurant.distanceMiles === "number" ? (
-            <button type="button" className="link-button cta-secondary" onClick={handleDistanceClick}>
-              <span className="distance-icon" aria-hidden="true">
-                <svg viewBox="0 0 16 16" className="distance-svg">
-                  <path
-                    d="M8 1.5a4.25 4.25 0 0 0-4.25 4.25c0 3.02 3.1 6.73 4.25 7.97 1.15-1.24 4.25-4.95 4.25-7.97A4.25 4.25 0 0 0 8 1.5Zm0 5.8a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </span>
-              {result.restaurant.distanceMiles.toFixed(1)} mi
-            </button>
+          <div className="card-footer">
+            <div className="card-actions">
+              <button type="button" className="link-button cta-primary" onClick={handleOrderClick}>
+                {provider ? (
+                  <span className="provider-icon" aria-hidden="true">
+                    {provider === "doordash" ? (
+                      <svg viewBox="0 0 24 24" className="provider-svg">
+                        <path d="M3 8h8.8l3.2 4-3.2 4H3l3.2-4L3 8z" fill="currentColor" />
+                      </svg>
+                    ) : (
+                      <svg viewBox="0 0 24 24" className="provider-svg">
+                        <path d="M4 9c0-1.7 1.3-3 3-3h10c1.7 0 3 1.3 3 3v6c0 1.7-1.3 3-3 3H7c-1.7 0-3-1.3-3-3V9zm5.2 1.5h1.6v1.7h2.4v-1.7h1.6V15h-1.6v-1.6h-2.4V15H9.2v-4.5z" fill="currentColor" />
+                      </svg>
+                    )}
+                  </span>
+                ) : null}
+                Order
+              </button>
+
+              {typeof result.restaurant.distanceMiles === "number" ? (
+                <button type="button" className="link-button cta-secondary" onClick={handleDistanceClick}>
+                  <span className="distance-icon" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" className="distance-svg">
+                      <path
+                        d="M8 1.5a4.25 4.25 0 0 0-4.25 4.25c0 3.02 3.1 6.73 4.25 7.97 1.15-1.24 4.25-4.95 4.25-7.97A4.25 4.25 0 0 0 8 1.5Zm0 5.8a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                  {result.restaurant.distanceMiles.toFixed(1)} mi
+                </button>
+              ) : null}
+            </div>
+          </div>
+
+          {chooserOpen ? (
+            <div className="order-chooser" role="dialog" aria-label="Choose delivery provider">
+              <button
+                type="button"
+                className="chooser-option"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleProviderSelect("doordash");
+                }}
+              >
+                DoorDash
+              </button>
+              <button
+                type="button"
+                className="chooser-option"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleProviderSelect("ubereats");
+                }}
+              >
+                Uber Eats
+              </button>
+            </div>
           ) : null}
-        </div>
-      </div>
-
-      {chooserOpen ? (
-        <div className="order-chooser" role="dialog" aria-label="Choose delivery provider">
-          <button
-            type="button"
-            className="chooser-option"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleProviderSelect("doordash");
-            }}
-          >
-            DoorDash
-          </button>
-          <button
-            type="button"
-            className="chooser-option"
-            onClick={(event) => {
-              event.stopPropagation();
-              handleProviderSelect("ubereats");
-            }}
-          >
-            Uber Eats
-          </button>
-        </div>
+        </>
       ) : null}
     </article>
   );
 }
-

@@ -412,205 +412,212 @@ main {
 
 .results-header {
   margin-bottom: 1rem;
+  display: grid;
+  gap: 0.4rem;
 }
 
 .results-title {
   margin: 0;
-  font-size: 1.55rem;
-  line-height: 1.1;
+  font-size: clamp(1.42rem, 3.1vw, 1.72rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
 .results-subtitle {
-  margin: 0.4rem 0 0;
+  margin: 0;
   color: var(--muted);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  max-width: 42ch;
+}
+
+.results-meta-row {
+  margin-top: 0.1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.8rem;
+}
+
+.results-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.79rem;
+  letter-spacing: 0.01em;
+}
+
+.results-meta-link {
+  color: var(--brand-orange);
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
 }
 
 .hero-pick {
-  margin-top: 1rem;
+  margin-top: 1.05rem;
   display: grid;
-  gap: 0.55rem;
-  padding: 1.05rem 1.1rem;
-  border-radius: 20px;
-  border: 1px solid var(--card-primary-border);
-  background: linear-gradient(180deg, var(--card-bg), var(--surface-strong));
-  box-shadow: var(--card-primary-shadow);
+  gap: 0.62rem;
+  padding: 1.1rem 1.15rem;
+  border-radius: 18px;
+  border: 1px solid color-mix(in oklab, var(--card-primary-border) 86%, transparent);
+  background: linear-gradient(180deg, var(--card-bg), color-mix(in oklab, var(--surface-strong) 85%, transparent));
+  box-shadow: 0 10px 24px color-mix(in oklab, var(--card-primary-shadow) 44%, transparent);
 }
 
 .hero-pick-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: 0.72rem;
 }
 
 .hero-pick-eyebrow {
   margin: 0;
   color: var(--brand-orange);
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-size: 0.69rem;
+  font-weight: 750;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
 .hero-pick-badge {
   margin: 0;
-  padding: 0.28rem 0.55rem;
+  padding: 0.24rem 0.52rem;
   border-radius: 999px;
-  background: rgba(255, 122, 26, 0.12);
-  border: 1px solid rgba(255, 122, 26, 0.22);
+  background: rgba(255, 122, 26, 0.1);
+  border: 1px solid rgba(255, 122, 26, 0.18);
   color: var(--brand-orange);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.69rem;
+  font-weight: 650;
 }
 
 .hero-pick-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.9rem;
 }
 
 .hero-pick-title {
   margin: 0;
-  font-size: 1.05rem;
-  font-weight: 800;
-  line-height: 1.25;
+  font-size: 1.08rem;
+  font-weight: 760;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
 }
 
 .hero-pick-subtitle {
-  margin: 0.15rem 0 0;
+  margin: 0.14rem 0 0;
   color: var(--restaurant-text);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .hero-pick-calories {
   margin: 0;
   white-space: nowrap;
   color: var(--brand-orange);
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 0.94rem;
+  font-weight: 760;
+  letter-spacing: 0.01em;
 }
 
 .hero-pick-why {
   margin: 0;
   color: var(--why-text);
-  font-size: 0.92rem;
-  font-weight: 600;
-  line-height: 1.45;
+  font-size: 0.9rem;
+  font-weight: 550;
+  line-height: 1.5;
 }
 
 .hero-pick-trust {
   margin: 0;
   color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.45;
+  font-size: 0.78rem;
+  line-height: 1.48;
 }
 
 .results-section-label {
-  margin: 1rem 0 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+  margin: 1.08rem 0 0;
+  color: color-mix(in oklab, var(--muted) 92%, transparent);
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 
 .results-grid {
   display: grid;
   gap: 0.9rem;
-  margin-top: 0.75rem;
+  margin-top: 0.65rem;
 }
 
 .filters-row {
   margin-top: 0.9rem;
   display: flex;
-  flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.5rem;
   min-width: 0;
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  border-radius: 12px;
+  padding: 0.52rem;
+  background: color-mix(in oklab, var(--surface-soft) 70%, transparent);
 }
 
-.filters-row > * {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.sort-inline {
+.filters-main-controls {
   display: flex;
   align-items: center;
-  flex-wrap: nowrap;
-  gap: 0.55rem;
+  gap: 0.45rem;
   min-width: 0;
-  max-width: 100%;
-  flex: 0 1 auto;
-  width: auto;
+  flex: 1 1 20rem;
 }
 
+.sort-inline,
 .provider-inline {
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-  gap: 0.55rem;
   min-width: 0;
-  max-width: 100%;
-  width: auto;
-}
-
-.filters-text {
-  font-size: 0.82rem;
-  color: var(--muted);
-  font-weight: 500;
-  letter-spacing: 0.01em;
 }
 
 .sort-control {
-  width: auto;
-  min-width: 0;
-  max-width: 15rem;
+  flex: 1 1 14rem;
 }
 
 .provider-control {
-  width: auto;
-  min-width: 0;
-  max-width: 15rem;
-  margin-left: auto;
+  flex: 0 0 9.5rem;
 }
 
-.sort-select-wrap {
-  width: auto;
-  min-width: 0;
-  max-width: 15rem;
-}
-
+.sort-select-wrap,
 .provider-select-wrap {
-  width: auto;
-  min-width: 0;
-  max-width: 15rem;
-}
-
-.sort-label {
+  width: 100%;
   min-width: 0;
 }
 
-.provider-label {
-  min-width: 0;
+.filters-text {
+  font-size: 0.76rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .cravings-toggle {
-  border: 1px solid var(--border);
-  background: var(--surface-soft);
+  border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
+  background: color-mix(in oklab, var(--panel) 90%, transparent);
   color: var(--muted);
-  border-radius: 9px;
-  padding: 0.5rem 0.65rem;
+  border-radius: 8px;
+  padding: 0.42rem 0.62rem;
   font: inherit;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.32rem;
   cursor: pointer;
   min-width: 0;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
+  transition: border-color 120ms ease, color 120ms ease;
+}
+
+.cravings-toggle:hover {
+  border-color: color-mix(in oklab, var(--brand-orange) 34%, var(--border));
+  color: var(--text);
 }
 
 .chevron {
@@ -623,33 +630,41 @@ main {
   transform: rotate(180deg);
 }
 
+@media (max-width: 560px) {
+  .filters-main-controls {
+    flex-wrap: wrap;
+    flex: 1 1 100%;
+  }
+
+  .sort-control,
+  .provider-control {
+    flex: 1 1 100%;
+  }
+}
+
 .select.compact {
-  min-width: 11.25rem;
-  max-width: 15rem;
-  width: auto;
-  padding: 0.45rem 0.65rem;
-  font-size: 0.85rem;
-  border-radius: 9px;
-}
-
-.sort-select {
-  width: auto;
-  max-width: 15rem;
+  width: 100%;
   min-width: 0;
+  max-width: none;
+  padding: 0.42rem 0.62rem;
+  font-size: 0.82rem;
+  border-radius: 8px;
+  border-color: color-mix(in oklab, var(--border) 88%, transparent);
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
 }
 
+.sort-select,
 .provider-select {
-  width: auto;
+  width: 100%;
   min-width: 0;
-  max-width: 15rem;
 }
 
 .craving-panel {
-  margin-top: 0.6rem;
-  border: 1px solid var(--border);
+  margin-top: 0.55rem;
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
   border-radius: 12px;
-  padding: 0.65rem;
-  background: var(--surface-soft);
+  padding: 0.62rem;
+  background: color-mix(in oklab, var(--surface-soft) 78%, transparent);
 }
 
 .craving-panel-header {
@@ -661,8 +676,8 @@ main {
 .chip-wrap {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.65rem;
+  gap: 0.45rem;
+  margin-top: 0.58rem;
 }
 
 .mode-toggle {
@@ -767,6 +782,33 @@ main {
 
 .card-clickable {
   cursor: pointer;
+}
+
+.card-collapsible {
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease,
+    background-color 140ms ease;
+}
+
+.card-collapsible:hover {
+  border-color: color-mix(in oklab, var(--card-primary-border) 78%, var(--card-border));
+  box-shadow: 0 10px 26px color-mix(in oklab, var(--card-primary-shadow) 45%, transparent);
+}
+
+.card-collapsible:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--brand-orange) 55%, white 12%);
+  outline-offset: 2px;
+}
+
+.card-collapsed {
+  padding-top: 1rem;
+  padding-bottom: 0.85rem;
+}
+
+.card-expanded {
+  padding-bottom: 1rem;
 }
 
 .card-top {
@@ -876,6 +918,10 @@ main {
   gap: 0.3rem;
 }
 
+.why-block-compact {
+  margin-top: 0.75rem;
+}
+
 .why-label {
   margin: 0;
   color: var(--brand-orange);
@@ -892,6 +938,26 @@ main {
   font-size: 0.84rem;
   font-weight: 500;
   padding-bottom: 1px;
+}
+
+.card-expand-hint {
+  margin-top: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--muted);
+  font-size: 0.74rem;
+  letter-spacing: 0.02em;
+}
+
+.expand-chevron {
+  display: inline-block;
+  transition: transform 140ms ease;
+  transform: rotate(0deg);
+}
+
+.expand-chevron.open {
+  transform: rotate(180deg);
 }
 
 .card-actions {

@@ -7,6 +7,7 @@ import type { RecommendationSortKey, RecommendationsApiResponse } from "../lib/a
 import type { CravingKey, CravingMatchMode } from "../lib/cravings";
 import type { OrderProvider } from "../lib/orderLinks";
 import { emitEvent } from "../lib/events";
+import { trackEvent } from "../lib/analytics";
 import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
 import { buildWhyThisWorksMap } from "../lib/whyThisWorks";
@@ -106,75 +107,59 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
 
   return (
     <>
-      <div className="filters-row">
-        <div
-          style={{
-            display: "flex",
-            minWidth: 0,
-            gap: "0.75rem",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <div
-            className="sort-inline sort-control"
-            style={{ flex: "1 1 auto", minWidth: 0, maxWidth: "100%" }}
-          >
-            <div className="sort-select-wrap" style={{ width: "100%", minWidth: 0, maxWidth: "100%" }}>
+      <div className="filters-row" aria-label="Results controls">
+        <div className="filters-main-controls">
+          <div className="sort-inline sort-control">
+            <div className="sort-select-wrap">
               <select
                 id="sort"
                 name="sort"
                 value={sort}
                 aria-label="Sort"
                 className="select compact sort-select"
-                style={{ width: "100%", minWidth: "0", maxWidth: "100%" }}
                 onChange={(event) => {
                   const nextSort = event.target.value as RecommendationSortKey;
                   setSort(nextSort);
-                trackFilterChanged({ sortMode: nextSort });
-              }}
-            >
-              {SORT_OPTIONS.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
+                  trackFilterChanged({ sortMode: nextSort });
+                }}
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
                 ))}
               </select>
             </div>
           </div>
 
-          <div
-            className="provider-inline provider-control"
-            style={{ flex: "0 0 9.5rem", width: "9.5rem", minWidth: "9.5rem", marginLeft: "auto" }}
-          >
-            <div className="provider-select-wrap" style={{ width: "100%", minWidth: 0, maxWidth: "100%" }}>
-            <select
-              id="provider"
-              name="provider"
-              value={provider ?? ""}
-              aria-label="Provider"
-              className="select compact provider-select"
-              style={{ width: "100%", minWidth: 0, maxWidth: "100%" }}
-              onChange={(event) => {
-                const nextProvider = event.target.value;
-                updateProvider(nextProvider === "doordash" || nextProvider === "ubereats" ? nextProvider : null);
-              }}
-            >
-              <option value="">Provider</option>
-              <option value="doordash">DoorDash</option>
-              <option value="ubereats">Uber Eats</option>
-            </select>
+          <div className="provider-inline provider-control">
+            <div className="provider-select-wrap">
+              <select
+                id="provider"
+                name="provider"
+                value={provider ?? ""}
+                aria-label="Provider"
+                className="select compact provider-select"
+                onChange={(event) => {
+                  const nextProvider = event.target.value;
+                  updateProvider(nextProvider === "doordash" || nextProvider === "ubereats" ? nextProvider : null);
+                }}
+              >
+                <option value="">Provider</option>
+                <option value="doordash">DoorDash</option>
+                <option value="ubereats">Uber Eats</option>
+              </select>
             </div>
           </div>
         </div>
 
         <button
           type="button"
-          className="cravings-toggle w-auto"
+          className="cravings-toggle"
           aria-expanded={cravingsOpen}
           onClick={() => setCravingsOpen((open) => !open)}
         >
-          <span className="filters-text">Cravings</span>
+          <span className="filters-text">Filters{selectedCravings.length ? ` (${selectedCravings.length})` : ""}</span>
           <span className={`chevron${cravingsOpen ? " open" : ""}`}>v</span>
         </button>
       </div>

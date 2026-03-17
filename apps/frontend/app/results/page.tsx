@@ -47,13 +47,11 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         <header className="results-header">
           <p className="eyebrow">Cheat Meal</p>
           <h1 className="results-title">Spend your last {calories} calories wisely.</h1>
-          <p className="results-subtitle">
-            One strong move beats a dozen mediocre ones.
-          </p>
-          <p className="results-subtitle">
-            Nashville pilot. National chains within 10 miles. <Link href="/">Adjust calories</Link>
-            {data ? ` | Source: ${data.meta.dataSource}` : ""}
-          </p>
+          <p className="results-subtitle">One strong move beats a dozen mediocre ones.</p>
+          <div className="results-meta-row">
+            <p className="results-meta">Nashville pilot · National chains within 10 miles{data ? ` · Source: ${data.meta.dataSource}` : ""}</p>
+            <Link className="results-meta-link" href="/">Adjust calories</Link>
+          </div>
         </header>
 
         {error ? <p className="empty">{error}</p> : null}
