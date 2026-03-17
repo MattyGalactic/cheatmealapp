@@ -195,7 +195,6 @@ export function MealCard({
       </div>
 
       <div className="card-expand-hint" aria-hidden="true">
-        <span>{expanded ? "Tap to collapse" : "Tap to expand"}</span>
         <span className={`expand-chevron${expanded ? " open" : ""}`}>⌄</span>
       </div>
 

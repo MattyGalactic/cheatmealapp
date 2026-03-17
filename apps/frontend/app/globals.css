@@ -785,6 +785,7 @@ main {
 }
 
 .card-collapsible {
+  position: relative;
   transition:
     border-color 140ms ease,
     box-shadow 140ms ease,
@@ -804,11 +805,11 @@ main {
 
 .card-collapsed {
   padding-top: 1rem;
-  padding-bottom: 0.85rem;
+  padding-bottom: 2.5rem;
 }
 
 .card-expanded {
-  padding-bottom: 1rem;
+  padding-bottom: 3rem;
 }
 
 .card-top {
@@ -941,17 +942,25 @@ main {
 }
 
 .card-expand-hint {
-  margin-top: 0.65rem;
+  position: absolute;
+  right: 0.95rem;
+  bottom: 0.9rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  justify-content: center;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--card-border);
+  background: color-mix(in oklab, var(--panel) 92%, transparent);
   color: var(--muted);
-  font-size: 0.74rem;
-  letter-spacing: 0.02em;
+  box-shadow: 0 4px 12px color-mix(in oklab, var(--card-primary-shadow) 22%, transparent);
 }
 
 .expand-chevron {
   display: inline-block;
+  font-size: 0.95rem;
+  line-height: 1;
   transition: transform 140ms ease;
   transform: rotate(0deg);
 }
