@@ -236,9 +236,9 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       ) : (
         <>
           {topPick ? (
-            <section className="hero-pick" aria-label="Top recommendation">
+            <section className="hero-pick" aria-label="Current top recommendation">
               <div className="hero-pick-header">
-                <p className="hero-pick-eyebrow">Top pick</p>
+                <p className="hero-pick-eyebrow">Current best match</p>
                 <button
                   type="button"
                   className="hero-pick-badge"
@@ -250,7 +250,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
                     })
                   }
                 >
-                  Best move right now
+                  Best fit for this setup
                 </button>
               </div>
               <div className="hero-pick-row">
@@ -261,7 +261,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
                 <p className="hero-pick-calories">{topPick.calories} cal</p>
               </div>
               <p className="hero-pick-why">{topPickWhy}</p>
-              <p className="hero-pick-trust">Picked for the best balance of satisfaction, calorie fit, and recommendation quality under your budget.</p>
+              <p className="hero-pick-trust">Based on your selected sort and filters, this currently has the strongest calorie-and-protein balance for your target.</p>
             </section>
           ) : null}
 

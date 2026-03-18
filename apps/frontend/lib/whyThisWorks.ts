@@ -14,32 +14,32 @@ export function getWhyThisWorksExplanation(input: ExplanationInput): string {
   const proteinGrams = input.proteinGrams ?? 0;
 
   if (!Number.isFinite(calories) || calories <= 0) {
-    return "Clean fit for the calories you have left";
+    return "Fits your calorie target based on available nutrition data.";
   }
 
-  const proteinPer100Cal = proteinGrams / (calories / 100);
+  const proteinPer100Cal = calories > 0 ? proteinGrams / (calories / 100) : 0;
   const budgetGap = input.calorieBudget - calories;
   const withinBudget = budgetGap >= 0;
   const underBudgetPct =
     input.calorieBudget > 0 ? budgetGap / input.calorieBudget : Number.POSITIVE_INFINITY;
 
   if (proteinPer100Cal >= 8) {
-    return "Highest-protein move without wasting calories";
+    return `${proteinGrams}g protein at ${calories} calories (${proteinPer100Cal.toFixed(1)}g per 100 cal), which is strong for this calorie range.`;
   }
 
   if (withinBudget && underBudgetPct <= 0.08) {
-    return "Uses almost all your budget on something actually satisfying";
+    return `${calories} calories puts you within ${Math.max(0, budgetGap)} of your target, so it uses your budget efficiently.`;
   }
 
   if (calories <= input.calorieBudget * 0.7 && proteinPer100Cal >= 5) {
-    return "Leaves room in the day while still feeling like a real meal";
+    return `${proteinGrams}g protein for ${calories} calories leaves room in your budget while keeping protein density solid.`;
   }
 
   if (input.isLowestCalorieBucket) {
-    return "Lightest option in this batch if you want to play it safe";
+    return `${calories} calories is among the lighter options in this result set if you want to stay conservative.`;
   }
 
-  return "Strong overall fit for the calories you have left";
+  return `${calories} calories with ${proteinGrams}g protein is a reasonable fit for your current target.`;
 }
 
 export function buildWhyThisWorksMap(

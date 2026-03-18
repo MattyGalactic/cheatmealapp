@@ -51,7 +51,6 @@ export function MealCard({
 }: MealCardProps) {
   const [chooserOpen, setChooserOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const isPrimaryRecommendation = result.rank === 1;
   const rankPosition = displayedRank ?? result.rank;
   const macroParts = [
     typeof result.proteinGrams === "number" ? `${result.proteinGrams}P` : null,
@@ -162,7 +161,7 @@ export function MealCard({
 
   return (
     <article
-      className={`card card-clickable card-collapsible${isPrimaryRecommendation ? " card-primary" : ""}${expanded ? " card-expanded" : " card-collapsed"}`}
+      className={`card card-clickable card-collapsible${expanded ? " card-expanded" : " card-collapsed"}`}
       onClick={toggleExpanded}
       onKeyDown={handleKeyDown}
       role="button"
@@ -170,8 +169,6 @@ export function MealCard({
       aria-expanded={expanded}
       aria-label={`${result.itemName} from ${result.restaurant.name}`}
     >
-      {isPrimaryRecommendation ? <p className="recommended-label">RECOMMENDED</p> : null}
-
       <div className="card-top">
         <div className="card-main">
           <p className="item-name">{result.itemName}</p>
@@ -198,13 +195,8 @@ export function MealCard({
       {expanded ? (
         <>
           <div className="info-block info-block-inline">
-            <p className="macro-row">
-              <span className="macro-label">Reliability</span>
-              <span className="macro-divider">&middot;</span>
-              <span className="macro-value">{result.score}</span>
-            </p>
             {typeof result.priceUsd === "number" ? (
-              <p className="macro-row price-row">
+              <p className="macro-row">
                 <span className="macro-label">Est. price</span>
                 <span className="macro-divider">&middot;</span>
                 <span className="macro-value">${result.priceUsd.toFixed(2)}</span>
