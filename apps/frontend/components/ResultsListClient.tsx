@@ -167,6 +167,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       {cravingsOpen ? (
         <section className="craving-panel" aria-label="Craving filters">
           <div className="craving-panel-header">
+            <p className="craving-panel-title">Filters</p>
             <button
               type="button"
               className="clear-button"
