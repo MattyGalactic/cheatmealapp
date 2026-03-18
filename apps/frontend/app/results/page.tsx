@@ -57,7 +57,21 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
           </div>
         </header>
 
-        {error ? <p className="empty">{error}</p> : null}
+        {error ? (
+          <section className="status-panel" aria-live="polite" aria-label="Could not load recommendations">
+            <p className="status-title">We couldn’t load recommendations right now.</p>
+            <p className="status-copy">Your calorie target is saved. This is usually temporary—try again in a few seconds.</p>
+            <p className="status-detail">Technical detail: {error}</p>
+            <div className="status-actions">
+              <Link className="link-button" href={`/results?calories=${calories}&page=${page}`}>
+                Try again
+              </Link>
+              <Link className="link-button" href="/">
+                Start a new search
+              </Link>
+            </div>
+          </section>
+        ) : null}
 
         {!error && data ? (
           <ResultsListClient

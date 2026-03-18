@@ -10,7 +10,7 @@ export default function NotFound() {
             <h1 className="hero-title">That page is off the menu.</h1>
             <p className="hero-support">Head back home and we’ll find a better move.</p>
           </div>
-          <Link href="/" className="submit-btn" style={{ textDecoration: "none", textAlign: "center" }}>
+          <Link href="/" className="button" style={{ textDecoration: "none", textAlign: "center" }}>
             Go home
           </Link>
         </section>

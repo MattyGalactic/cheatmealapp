@@ -224,14 +224,44 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       ) : null}
 
       {data.results.length === 0 ? (
-        <section className="empty-state" aria-label="No meals found">
-          <p className="empty-state-title">Nothing fits that calorie target yet.</p>
-          <p className="empty">Try a slightly higher number and we’ll give you a better shot at a satisfying option.</p>
+        <section className="status-panel" aria-live="polite" aria-label="No meals found">
+          <p className="status-title">No close matches at this calorie target yet.</p>
+          <p className="status-copy">Bumping your calories up by 75–150 usually unlocks much better options without blowing the day.</p>
+          <div className="status-actions">
+            <Link className="link-button" href={`/results?calories=${Math.min(calorieBudget + 100, 2000)}&page=1`}>
+              Try {Math.min(calorieBudget + 100, 2000)} calories
+            </Link>
+            <Link className="link-button" href="/">
+              Change target manually
+            </Link>
+          </div>
         </section>
       ) : filteredResults.length === 0 ? (
-        <section className="empty-state" aria-label="No craving matches found">
-          <p className="empty-state-title">Nothing matches that craving combo.</p>
-          <p className="empty">Try switching to Match Any or clear a craving to bring strong options back.</p>
+        <section className="status-panel" aria-live="polite" aria-label="No craving matches found">
+          <p className="status-title">No meals match this filter combo.</p>
+          <p className="status-copy">Your current cravings are probably too strict together. Try Match Any or clear one tag.</p>
+          <div className="status-actions">
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => {
+                setCravingMode("any");
+                trackFilterChanged({ matchMode: "any" });
+              }}
+            >
+              Switch to Match Any
+            </button>
+            <button
+              type="button"
+              className="link-button"
+              onClick={() => {
+                setSelectedCravings([]);
+                trackFilterChanged({ cravingsSelected: [] });
+              }}
+            >
+              Clear filters
+            </button>
+          </div>
         </section>
       ) : (
         <>
@@ -295,7 +325,9 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
             Next Page
           </Link>
         ) : (
-          <span className="link-button">End of results</span>
+          <span className="link-button pagination-end" aria-live="polite">
+            You’ve seen all matches for this target
+          </span>
         )}
       </nav>
     </>
