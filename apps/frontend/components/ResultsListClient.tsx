@@ -269,19 +269,6 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
             <section className="hero-pick" aria-label="Current top recommendation">
               <div className="hero-pick-header">
                 <p className="hero-pick-eyebrow">Current best match</p>
-                <button
-                  type="button"
-                  className="hero-pick-badge"
-                  onClick={() =>
-                    trackEvent("top_pick_clicked", {
-                      itemId: topPick.itemId,
-                      restaurant: topPick.restaurant.name,
-                      calories: topPick.calories,
-                    })
-                  }
-                >
-                  Best fit for this setup
-                </button>
               </div>
               <div className="hero-pick-row">
                 <div>
