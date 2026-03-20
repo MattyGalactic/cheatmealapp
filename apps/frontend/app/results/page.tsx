@@ -7,6 +7,10 @@ type ResultsPageProps = {
   searchParams: {
     calories?: string;
     page?: string;
+    sort?: string;
+    provider?: string;
+    cravings?: string;
+    match?: string;
   };
 };
 
@@ -39,7 +43,17 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
     error = err instanceof Error ? err.message : "Failed to load recommendations";
   }
 
-  const nextHref = `/results?calories=${calories}&page=${page + 1}`;
+  const nextParams = new URLSearchParams({
+    calories: String(calories),
+    page: String(page + 1),
+  });
+
+  if (searchParams.sort) nextParams.set("sort", searchParams.sort);
+  if (searchParams.provider) nextParams.set("provider", searchParams.provider);
+  if (searchParams.cravings) nextParams.set("cravings", searchParams.cravings);
+  if (searchParams.match) nextParams.set("match", searchParams.match);
+
+  const nextHref = `/results?${nextParams.toString()}`;
 
   return (
     <main className="results-shell">

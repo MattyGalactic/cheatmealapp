@@ -2,15 +2,25 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { MealCard } from "./MealCard";
 import type { RecommendationSortKey, RecommendationsApiResponse } from "../lib/api";
 import type { CravingKey, CravingMatchMode } from "../lib/cravings";
 import type { OrderProvider } from "../lib/orderLinks";
 import { emitEvent } from "../lib/events";
-import { trackEvent } from "../lib/analytics";
 import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
 import { buildWhyThisWorksMap } from "../lib/whyThisWorks";
+import {
+  clearLocalSettings,
+  DEFAULT_LOCAL_DEFAULTS,
+  isValidCravingMode,
+  isValidProvider,
+  isValidSort,
+  parseCravingsParam,
+  readLocalSettings,
+  writeLocalSettings,
+} from "../lib/localSettings";
 
 type ResultsListClientProps = {
   calorieBudget: number;
@@ -43,6 +53,9 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const [selectedCravings, setSelectedCravings] = useState<CravingKey[]>([]);
   const [cravingMode, setCravingMode] = useState<CravingMatchMode>("all");
   const [cravingsOpen, setCravingsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const searchParams = useSearchParams();
+
   const taggedResults = tagResultsWithCravings(data.results, calorieBudget);
   const filteredResults = filterByCravings(taggedResults, selectedCravings, cravingMode);
   const sortedResults = sortRecommendationResults(filteredResults, sort);
@@ -51,22 +64,22 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const topPickWhy = topPick ? whyMap.get(topPick.itemId) ?? topPick.whyThisWorks : null;
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const value = window.localStorage.getItem("cm_order_provider");
-    setProvider(value === "doordash" || value === "ubereats" ? value : null);
-  }, []);
+    const settings = readLocalSettings();
+    const defaults = settings?.defaults ?? DEFAULT_LOCAL_DEFAULTS;
+
+    const querySort = searchParams.get("sort");
+    const queryProvider = searchParams.get("provider");
+    const queryCravings = parseCravingsParam(searchParams.get("cravings"));
+    const queryMode = searchParams.get("match");
+
+    setSort(isValidSort(querySort) ? querySort : defaults.sort);
+    setProvider(isValidProvider(queryProvider) ? queryProvider : defaults.provider);
+    setSelectedCravings(queryCravings.length > 0 ? queryCravings : defaults.selectedCravings);
+    setCravingMode(isValidCravingMode(queryMode) ? queryMode : defaults.cravingMode);
+  }, [searchParams]);
 
   const updateProvider = (nextProvider: OrderProvider | null) => {
     const previousProvider = provider;
-
-    if (typeof window !== "undefined") {
-      if (nextProvider) {
-        window.localStorage.setItem("cm_order_provider", nextProvider);
-      } else {
-        window.localStorage.removeItem("cm_order_provider");
-      }
-    }
-
     setProvider(nextProvider);
 
     if (previousProvider === nextProvider) {
@@ -103,6 +116,25 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       trackFilterChanged({ cravingsSelected: updated });
       return updated;
     });
+  };
+
+  const saveCurrentAsDefaults = () => {
+    writeLocalSettings({
+      calorieBudget,
+      sort,
+      provider,
+      selectedCravings,
+      cravingMode,
+    });
+    setSettingsOpen(false);
+  };
+
+  const resetToSavedDefaults = () => {
+    const defaults = readLocalSettings()?.defaults ?? DEFAULT_LOCAL_DEFAULTS;
+    setSort(defaults.sort);
+    setProvider(defaults.provider);
+    setSelectedCravings(defaults.selectedCravings);
+    setCravingMode(defaults.cravingMode);
   };
 
   return (
@@ -162,7 +194,45 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
           <span className="filters-text">Filters{selectedCravings.length ? ` (${selectedCravings.length})` : ""}</span>
           <span className={`chevron${cravingsOpen ? " open" : ""}`}>v</span>
         </button>
+
+        <button type="button" className="cravings-toggle" onClick={() => setSettingsOpen(true)}>
+          <span className="filters-text">Settings</span>
+        </button>
       </div>
+
+      {settingsOpen ? (
+        <div className="local-settings-modal-backdrop" role="presentation" onClick={() => setSettingsOpen(false)}>
+          <section
+            className="local-settings-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Local defaults"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <p className="local-settings-title">Local defaults</p>
+            <p className="local-settings-copy">Saved on this device only. Query params still override saved defaults when present.</p>
+            <p className="local-settings-copy">Save your current calorie target, sort, provider, and filters as defaults.</p>
+            <div className="local-settings-actions">
+              <button type="button" className="link-button" onClick={saveCurrentAsDefaults}>Save as defaults</button>
+              <button type="button" className="link-button" onClick={resetToSavedDefaults}>Reset to saved defaults</button>
+              <button
+                type="button"
+                className="link-button"
+                onClick={() => {
+                  clearLocalSettings();
+                  setSort(DEFAULT_LOCAL_DEFAULTS.sort);
+                  setProvider(DEFAULT_LOCAL_DEFAULTS.provider);
+                  setSelectedCravings(DEFAULT_LOCAL_DEFAULTS.selectedCravings);
+                  setCravingMode(DEFAULT_LOCAL_DEFAULTS.cravingMode);
+                }}
+              >
+                Clear saved defaults
+              </button>
+              <button type="button" className="link-button" onClick={() => setSettingsOpen(false)}>Close</button>
+            </div>
+          </section>
+        </div>
+      ) : null}
 
       {cravingsOpen ? (
         <section className="craving-panel" aria-label="Craving filters">
