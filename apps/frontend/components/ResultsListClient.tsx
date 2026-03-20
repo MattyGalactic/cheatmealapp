@@ -12,14 +12,12 @@ import { filterByCravings, tagResultsWithCravings } from "../lib/cravings";
 import { sortRecommendationResults } from "../lib/resultSort";
 import { buildWhyThisWorksMap } from "../lib/whyThisWorks";
 import {
-  clearLocalSettings,
   DEFAULT_LOCAL_DEFAULTS,
   isValidCravingMode,
   isValidProvider,
   isValidSort,
   parseCravingsParam,
   readLocalSettings,
-  writeLocalSettings,
 } from "../lib/localSettings";
 
 type ResultsListClientProps = {
@@ -53,7 +51,6 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
   const [selectedCravings, setSelectedCravings] = useState<CravingKey[]>([]);
   const [cravingMode, setCravingMode] = useState<CravingMatchMode>("all");
   const [cravingsOpen, setCravingsOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const searchParams = useSearchParams();
 
   const taggedResults = tagResultsWithCravings(data.results, calorieBudget);
@@ -77,6 +74,20 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
     setSelectedCravings(queryCravings.length > 0 ? queryCravings : defaults.selectedCravings);
     setCravingMode(isValidCravingMode(queryMode) ? queryMode : defaults.cravingMode);
   }, [searchParams]);
+
+  useEffect(() => {
+    const onDefaultsUpdated = (event: Event) => {
+      const nextDefaults = (event as CustomEvent<typeof DEFAULT_LOCAL_DEFAULTS>).detail;
+      if (!nextDefaults) return;
+      setSort(nextDefaults.sort);
+      setProvider(nextDefaults.provider);
+      setSelectedCravings(nextDefaults.selectedCravings);
+      setCravingMode(nextDefaults.cravingMode);
+    };
+
+    window.addEventListener("cm:local-defaults-updated", onDefaultsUpdated);
+    return () => window.removeEventListener("cm:local-defaults-updated", onDefaultsUpdated);
+  }, []);
 
   const updateProvider = (nextProvider: OrderProvider | null) => {
     const previousProvider = provider;
@@ -116,25 +127,6 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
       trackFilterChanged({ cravingsSelected: updated });
       return updated;
     });
-  };
-
-  const saveCurrentAsDefaults = () => {
-    writeLocalSettings({
-      calorieBudget,
-      sort,
-      provider,
-      selectedCravings,
-      cravingMode,
-    });
-    setSettingsOpen(false);
-  };
-
-  const resetToSavedDefaults = () => {
-    const defaults = readLocalSettings()?.defaults ?? DEFAULT_LOCAL_DEFAULTS;
-    setSort(defaults.sort);
-    setProvider(defaults.provider);
-    setSelectedCravings(defaults.selectedCravings);
-    setCravingMode(defaults.cravingMode);
   };
 
   return (
@@ -194,45 +186,7 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
           <span className="filters-text">Filters{selectedCravings.length ? ` (${selectedCravings.length})` : ""}</span>
           <span className={`chevron${cravingsOpen ? " open" : ""}`}>v</span>
         </button>
-
-        <button type="button" className="cravings-toggle" onClick={() => setSettingsOpen(true)}>
-          <span className="filters-text">Settings</span>
-        </button>
       </div>
-
-      {settingsOpen ? (
-        <div className="local-settings-modal-backdrop" role="presentation" onClick={() => setSettingsOpen(false)}>
-          <section
-            className="local-settings-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Local defaults"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <p className="local-settings-title">Local defaults</p>
-            <p className="local-settings-copy">Saved on this device only. Query params still override saved defaults when present.</p>
-            <p className="local-settings-copy">Save your current calorie target, sort, provider, and filters as defaults.</p>
-            <div className="local-settings-actions">
-              <button type="button" className="link-button" onClick={saveCurrentAsDefaults}>Save as defaults</button>
-              <button type="button" className="link-button" onClick={resetToSavedDefaults}>Reset to saved defaults</button>
-              <button
-                type="button"
-                className="link-button"
-                onClick={() => {
-                  clearLocalSettings();
-                  setSort(DEFAULT_LOCAL_DEFAULTS.sort);
-                  setProvider(DEFAULT_LOCAL_DEFAULTS.provider);
-                  setSelectedCravings(DEFAULT_LOCAL_DEFAULTS.selectedCravings);
-                  setCravingMode(DEFAULT_LOCAL_DEFAULTS.cravingMode);
-                }}
-              >
-                Clear saved defaults
-              </button>
-              <button type="button" className="link-button" onClick={() => setSettingsOpen(false)}>Close</button>
-            </div>
-          </section>
-        </div>
-      ) : null}
 
       {cravingsOpen ? (
         <section className="craving-panel" aria-label="Craving filters">

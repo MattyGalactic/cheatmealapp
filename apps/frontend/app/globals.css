@@ -937,9 +937,10 @@ main {
 .macro-row {
   margin: 0;
   color: color-mix(in oklab, var(--macro-text) 82%, var(--muted));
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 430;
-  line-height: 1.3;
+  line-height: 1.2;
+  white-space: nowrap;
   padding-bottom: 1px;
 }
 
@@ -1496,6 +1497,31 @@ main {
 
 .settings-option + .settings-option {
   margin-top: 0.22rem;
+}
+
+.local-settings-inline-copy {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.settings-inline-input,
+.settings-inline-select {
+  margin-top: 0.35rem;
+  margin-bottom: 0.55rem;
+}
+
+.settings-inline-label {
+  margin-bottom: 0.4rem;
+}
+
+.settings-inline-chips {
+  margin-bottom: 0.5rem;
+}
+
+.settings-inline-actions {
+  margin-top: 0.5rem;
 }
 
 .local-settings-modal-backdrop {

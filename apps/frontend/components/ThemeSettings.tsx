@@ -1,12 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import type { RecommendationSortKey } from "../lib/api";
+import type { CravingKey, CravingMatchMode } from "../lib/cravings";
+import type { OrderProvider } from "../lib/orderLinks";
+import { clearLocalSettings, DEFAULT_LOCAL_DEFAULTS, readLocalSettings, writeLocalSettings } from "../lib/localSettings";
 
 type ThemePreference = "light" | "dark";
 type AccentPreference = "classic" | "focus" | "balance" | "stealth";
 
 const THEME_KEY = "cm_theme";
 const ACCENT_KEY = "cm_accent";
+
+const SORT_OPTIONS: Array<{ value: RecommendationSortKey; label: string }> = [
+  { value: "best_match", label: "Best match" },
+  { value: "highest_protein", label: "Highest protein" },
+  { value: "lowest_calories", label: "Lowest calories" },
+  { value: "restaurant", label: "Restaurant" },
+];
+
+const CRAVING_OPTIONS: CravingKey[] = [
+  "Crispy",
+  "Cheesy",
+  "Sweet",
+  "Spicy",
+  "Savory",
+  "Fresh",
+  "Comfort",
+  "High-Protein",
+  "Low-Cal",
+];
 
 const ACCENT_VALUES: Record<AccentPreference, { accent: string; h: string; s: string; l: string; glowLight: string; glowDark: string }> = {
   classic: { accent: "16.0396039604 100% 60.3921568627%", h: "34", s: "62%", l: "52%", glowLight: "0.05", glowDark: "0.11" },
@@ -53,9 +77,11 @@ function AccentDot({ tone, selected }: { tone: string; selected: boolean }) {
 }
 
 export function ThemeSettings() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [theme, setTheme] = useState<ThemePreference>("dark");
   const [accent, setAccent] = useState<AccentPreference>("classic");
+  const [defaultsDraft, setDefaultsDraft] = useState({ ...DEFAULT_LOCAL_DEFAULTS });
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem(THEME_KEY);
@@ -66,6 +92,7 @@ export function ThemeSettings() {
     setAccent(nextAccent);
     applyTheme(nextTheme);
     applyAccent(nextAccent);
+    setDefaultsDraft(readLocalSettings()?.defaults ?? DEFAULT_LOCAL_DEFAULTS);
   }, []);
 
   const setAndPersistTheme = (nextTheme: ThemePreference) => {
@@ -78,6 +105,28 @@ export function ThemeSettings() {
     setAccent(nextAccent);
     window.localStorage.setItem(ACCENT_KEY, nextAccent);
     applyAccent(nextAccent);
+  };
+
+  const publishDefaultsUpdate = (nextDefaults: typeof DEFAULT_LOCAL_DEFAULTS) => {
+    window.dispatchEvent(new CustomEvent("cm:local-defaults-updated", { detail: nextDefaults }));
+  };
+
+  const saveDefaults = () => {
+    const saved = writeLocalSettings(defaultsDraft).defaults;
+    setDefaultsDraft(saved);
+    publishDefaultsUpdate(saved);
+  };
+
+  const resetToSaved = () => {
+    const saved = readLocalSettings()?.defaults ?? DEFAULT_LOCAL_DEFAULTS;
+    setDefaultsDraft(saved);
+    publishDefaultsUpdate(saved);
+  };
+
+  const clearDefaults = () => {
+    clearLocalSettings();
+    setDefaultsDraft(DEFAULT_LOCAL_DEFAULTS);
+    publishDefaultsUpdate(DEFAULT_LOCAL_DEFAULTS);
   };
 
   return (
@@ -195,6 +244,107 @@ export function ThemeSettings() {
             <AccentDot tone={ACCENT_VALUES.stealth.accent} selected={accent === "stealth"} />
             <span>Stealth</span>
           </label>
+        </section>
+
+        <section className="settings-section" aria-label="Local defaults">
+          <p className="settings-section-title">Local defaults</p>
+          <p className="local-settings-inline-copy">
+            Saved on this device only.{pathname?.startsWith("/results") ? " Query params still override saved defaults when present." : ""}
+          </p>
+
+          <label className="label" htmlFor="settings-calories">Default calories</label>
+          <input
+            id="settings-calories"
+            type="tel"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            className="input settings-inline-input"
+            value={String(defaultsDraft.calorieBudget)}
+            onChange={(event) => {
+              const next = Number(event.target.value);
+              setDefaultsDraft((current) => ({
+                ...current,
+                calorieBudget: Number.isFinite(next) ? next : DEFAULT_LOCAL_DEFAULTS.calorieBudget,
+              }));
+            }}
+          />
+
+          <label className="label" htmlFor="settings-sort">Default sort</label>
+          <select
+            id="settings-sort"
+            className="select settings-inline-select"
+            value={defaultsDraft.sort}
+            onChange={(event) => setDefaultsDraft((current) => ({ ...current, sort: event.target.value as RecommendationSortKey }))}
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+
+          <label className="label" htmlFor="settings-provider">Default provider</label>
+          <select
+            id="settings-provider"
+            className="select settings-inline-select"
+            value={defaultsDraft.provider ?? ""}
+            onChange={(event) => {
+              const next = event.target.value;
+              setDefaultsDraft((current) => ({
+                ...current,
+                provider: next === "doordash" || next === "ubereats" ? next : null,
+              }));
+            }}
+          >
+            <option value="">No preference</option>
+            <option value="doordash">DoorDash</option>
+            <option value="ubereats">Uber Eats</option>
+          </select>
+
+          <p className="label settings-inline-label">Default cravings</p>
+          <div className="chip-wrap settings-inline-chips">
+            {CRAVING_OPTIONS.map((craving) => {
+              const selected = defaultsDraft.selectedCravings.includes(craving);
+              return (
+                <button
+                  key={craving}
+                  type="button"
+                  className={`chip${selected ? " selected" : ""}`}
+                  onClick={() => {
+                    setDefaultsDraft((current) => ({
+                      ...current,
+                      selectedCravings: selected
+                        ? current.selectedCravings.filter((value) => value !== craving)
+                        : [...current.selectedCravings, craving],
+                    }));
+                  }}
+                >
+                  {craving}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mode-toggle" role="group" aria-label="Default craving match mode">
+            <button
+              type="button"
+              className={`mode-option${defaultsDraft.cravingMode === "all" ? " active" : ""}`}
+              onClick={() => setDefaultsDraft((current) => ({ ...current, cravingMode: "all" }))}
+            >
+              Match All
+            </button>
+            <button
+              type="button"
+              className={`mode-option${defaultsDraft.cravingMode === "any" ? " active" : ""}`}
+              onClick={() => setDefaultsDraft((current) => ({ ...current, cravingMode: "any" }))}
+            >
+              Match Any
+            </button>
+          </div>
+
+          <div className="local-settings-actions settings-inline-actions">
+            <button type="button" className="link-button" onClick={saveDefaults}>Save defaults</button>
+            <button type="button" className="link-button" onClick={resetToSaved}>Reset to saved defaults</button>
+            <button type="button" className="link-button" onClick={clearDefaults}>Clear saved defaults</button>
+          </div>
         </section>
       </aside>
     </>
