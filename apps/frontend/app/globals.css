@@ -439,7 +439,6 @@ main {
   margin-bottom: 1rem;
   display: grid;
   gap: 0.4rem;
-  min-height: min(52vh, 420px);
 }
 
 .results-title {
@@ -488,8 +487,13 @@ main {
 }
 
 .results-header-footer {
-  margin-top: auto;
-  padding-top: 0.4rem;
+  margin-top: 0.35rem;
+  padding-top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.5rem 0.9rem;
 }
 
 .hero-pick {
