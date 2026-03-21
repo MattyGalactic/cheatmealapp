@@ -604,9 +604,7 @@ main {
 
 .filters-row {
   margin-top: 0.9rem;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
   gap: 0.5rem;
   min-width: 0;
   border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
@@ -616,11 +614,9 @@ main {
 }
 
 .filters-main-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
+  display: grid;
+  gap: 0.5rem;
   min-width: 0;
-  flex: 1 1 20rem;
 }
 
 .sort-inline,
@@ -628,12 +624,9 @@ main {
   min-width: 0;
 }
 
-.sort-control {
-  flex: 1 1 14rem;
-}
-
+.sort-control,
 .provider-control {
-  flex: 0 0 9.5rem;
+  min-width: 0;
 }
 
 .sort-select-wrap,
@@ -650,19 +643,20 @@ main {
 }
 
 .cravings-toggle {
+  width: 100%;
   border: 1px solid color-mix(in oklab, var(--border) 90%, transparent);
   background: color-mix(in oklab, var(--panel) 90%, transparent);
   color: var(--muted);
-  border-radius: 8px;
-  padding: 0.42rem 0.62rem;
+  border-radius: 10px;
+  padding: 0.72rem 0.8rem;
   font: inherit;
   display: inline-flex;
   align-items: center;
-  gap: 0.32rem;
+  justify-content: space-between;
+  gap: 0.5rem;
   cursor: pointer;
   min-width: 0;
-  flex: 0 0 auto;
-  transition: border-color 120ms ease, color 120ms ease;
+  transition: border-color 120ms ease, color 120ms ease, background-color 120ms ease;
 }
 
 .cravings-toggle:hover {
@@ -681,14 +675,8 @@ main {
 }
 
 @media (max-width: 560px) {
-  .filters-main-controls {
-    flex-wrap: wrap;
-    flex: 1 1 100%;
-  }
-
-  .sort-control,
-  .provider-control {
-    flex: 1 1 100%;
+  .filters-row {
+    gap: 0.55rem;
   }
 }
 
