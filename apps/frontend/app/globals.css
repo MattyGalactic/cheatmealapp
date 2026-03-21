@@ -110,6 +110,7 @@ body {
   padding: 0;
   overflow-x: hidden;
   overflow-x: clip;
+  scrollbar-gutter: stable;
   background:
     radial-gradient(circle at 16% 8%, var(--bg-accent-glow), transparent 62%),
     radial-gradient(circle at 88% 0%, var(--bg-base-glow), transparent 66%),
@@ -123,6 +124,12 @@ body {
   transition-property: background-color, background-image, color, border-color;
   transition-duration: 150ms;
   transition-timing-function: ease-out;
+}
+
+html.settings-open,
+body.settings-open {
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 a {
@@ -1373,7 +1380,8 @@ main {
   position: fixed;
   top: 0;
   right: 0;
-  height: 100dvh;
+  height: 100svh;
+  max-height: 100dvh;
   width: 100vw;
   max-width: 384px;
   z-index: 70;
@@ -1382,7 +1390,13 @@ main {
   box-shadow: -14px 0 28px rgba(0, 0, 0, 0.2);
   transform: translateX(100%);
   transition: transform 150ms ease-out;
-  padding: calc(12px + env(safe-area-inset-top)) 14px calc(12px + env(safe-area-inset-bottom));
+  padding-top: max(12px, env(safe-area-inset-top));
+  padding-right: max(14px, env(safe-area-inset-right));
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  padding-left: max(14px, env(safe-area-inset-left));
+  display: flex;
+  flex-direction: column;
+  overflow: clip;
 }
 
 .settings-panel.open {
@@ -1393,6 +1407,23 @@ main {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex: 0 0 auto;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--bg-elev);
+  padding-bottom: 0.4rem;
+}
+
+.settings-panel-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  padding-top: 0.2rem;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
 
 .settings-title {
@@ -1522,6 +1553,7 @@ main {
 
 .settings-inline-actions {
   margin-top: 0.5rem;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
 
 .local-settings-modal-backdrop {

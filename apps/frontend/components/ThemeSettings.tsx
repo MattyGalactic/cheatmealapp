@@ -95,6 +95,35 @@ export function ThemeSettings() {
     setDefaultsDraft(readLocalSettings()?.defaults ?? DEFAULT_LOCAL_DEFAULTS);
   }, []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    root.classList.toggle("settings-open", open);
+    body.classList.toggle("settings-open", open);
+
+    return () => {
+      root.classList.remove("settings-open");
+      body.classList.remove("settings-open");
+    };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [open]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
   const setAndPersistTheme = (nextTheme: ThemePreference) => {
     setTheme(nextTheme);
     window.localStorage.setItem(THEME_KEY, nextTheme);
@@ -162,6 +191,7 @@ export function ThemeSettings() {
           </button>
         </div>
 
+        <div className="settings-panel-body">
         <section className="settings-section" aria-label="Appearance">
           <p className="settings-section-title">Appearance</p>
           <label className={`settings-option settings-row${theme === "light" ? " selected" : ""}`}>
@@ -346,6 +376,7 @@ export function ThemeSettings() {
             <button type="button" className="link-button" onClick={clearDefaults}>Clear saved defaults</button>
           </div>
         </section>
+        </div>
       </aside>
     </>
   );
