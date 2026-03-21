@@ -439,6 +439,7 @@ main {
   margin-bottom: 1rem;
   display: grid;
   gap: 0.4rem;
+  min-height: min(52vh, 420px);
 }
 
 .results-title {
@@ -484,6 +485,11 @@ main {
   font-size: 0.78rem;
   font-weight: 650;
   letter-spacing: 0.01em;
+}
+
+.results-header-footer {
+  margin-top: auto;
+  padding-top: 0.4rem;
 }
 
 .hero-pick {

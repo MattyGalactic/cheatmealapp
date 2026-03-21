@@ -61,12 +61,13 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         <header className="results-header">
           <p className="eyebrow">Cheat Meal</p>
           <h1 className="results-title">Here are strong options around your {calories}-calorie target.</h1>
-          <p className="results-subtitle">Start with the current best match, then compare by protein, calories, or restaurant.</p>
           <div className="results-meta-row">
             <div>
               <p className="results-meta">National chains within 10 miles (Nashville pilot)</p>
               {data ? <p className="results-meta-source">Data source: {data.meta.dataSource}</p> : null}
             </div>
+          </div>
+          <div className="results-header-footer">
             <Link className="results-meta-link" href="/">Adjust calories</Link>
           </div>
         </header>
