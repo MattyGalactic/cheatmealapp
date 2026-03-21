@@ -49,7 +49,7 @@ export default function HomePage() {
 
           <div className="proof-section" aria-labelledby="example-meals-title">
             <div className="proof-header">
-              <h2 className="proof-title" id="example-meals-title">Recent recommendations in your area</h2>
+              <h2 className="proof-title" id="example-meals-title">Recent local picks</h2>
             </div>
 
             <div className="proof-grid">
