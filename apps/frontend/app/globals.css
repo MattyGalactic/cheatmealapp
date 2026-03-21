@@ -244,6 +244,10 @@ main {
   padding: 0.9rem 0.95rem;
 }
 
+.input-italic-placeholder::placeholder {
+  font-style: italic;
+}
+
 .input:focus-visible,
 .select:focus-visible {
   outline: 2px solid hsl(var(--accent));

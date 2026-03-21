@@ -42,7 +42,7 @@ export default function HomePage() {
         <section className="hero-card" aria-labelledby="cheatmeal-title">
           <div className="hero-copy">
             <p className="brand" id="cheatmeal-title">Cheat Meal</p>
-            <h1 className="hero-title">Find the smartest indulgence for the calories you have left.</h1>
+            <h1 className="hero-title">Strategic indulgence starts with the right pick</h1>
           </div>
 
           <LandingSearchForm />

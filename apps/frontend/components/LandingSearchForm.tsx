@@ -33,17 +33,15 @@ export function LandingSearchForm() {
         });
       }}
     >
-      <label className="label" htmlFor="calories">
-        Calories left today
-      </label>
       <input
         id="calories"
         name="calories"
         type="tel"
         required
-        className="input"
+        className="input input-italic-placeholder"
         inputMode="numeric"
         pattern="[0-9]*"
+        placeholder="Calories"
         value={calories}
         onChange={(event) => setCalories(event.target.value)}
       />
