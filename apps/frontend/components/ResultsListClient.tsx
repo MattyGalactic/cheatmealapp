@@ -302,7 +302,6 @@ export function ResultsListClient({ calorieBudget, data, nextHref }: ResultsList
                 <p className="hero-pick-calories">{topPick.calories} cal</p>
               </div>
               <p className="hero-pick-why">{topPickWhy}</p>
-              <p className="hero-pick-trust">Based on your selected sort and filters, this currently has the strongest calorie-and-protein balance for your target.</p>
             </section>
           ) : null}
 
