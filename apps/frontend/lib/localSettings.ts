@@ -19,7 +19,6 @@ const CRAVING_VALUES: CravingKey[] = [
 ];
 
 export type LocalDefaultsV1 = {
-  calorieBudget: number;
   sort: RecommendationSortKey;
   provider: OrderProvider | null;
   selectedCravings: CravingKey[];
@@ -32,18 +31,11 @@ export type LocalSettingsV1 = {
 };
 
 export const DEFAULT_LOCAL_DEFAULTS: LocalDefaultsV1 = {
-  calorieBudget: 400,
   sort: "best_match",
   provider: null,
   selectedCravings: [],
   cravingMode: "all",
 };
-
-function clampCalories(value: unknown): number {
-  const parsed = Number(value);
-  if (!Number.isFinite(parsed)) return DEFAULT_LOCAL_DEFAULTS.calorieBudget;
-  return Math.max(50, Math.min(2000, Math.round(parsed)));
-}
 
 function sanitizeSort(value: unknown): RecommendationSortKey {
   return SORT_VALUES.includes(value as RecommendationSortKey)
@@ -76,7 +68,6 @@ function sanitizeDefaults(value: unknown): LocalDefaultsV1 {
   const raw = value as Partial<LocalDefaultsV1>;
 
   return {
-    calorieBudget: clampCalories(raw.calorieBudget),
     sort: sanitizeSort(raw.sort),
     provider: sanitizeProvider(raw.provider),
     selectedCravings: sanitizeCravings(raw.selectedCravings),

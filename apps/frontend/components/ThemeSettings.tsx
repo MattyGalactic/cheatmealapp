@@ -279,25 +279,8 @@ export function ThemeSettings() {
         <section className="settings-section" aria-label="Local defaults">
           <p className="settings-section-title">Local defaults</p>
           <p className="local-settings-inline-copy">
-            Saved on this device only.{pathname?.startsWith("/results") ? " Query params still override saved defaults when present." : ""}
+            Saved on this device only for filters and display preferences.{pathname?.startsWith("/results") ? " Query params still override saved defaults when present." : ""}
           </p>
-
-          <label className="label" htmlFor="settings-calories">Default calories</label>
-          <input
-            id="settings-calories"
-            type="tel"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            className="input settings-inline-input"
-            value={String(defaultsDraft.calorieBudget)}
-            onChange={(event) => {
-              const next = Number(event.target.value);
-              setDefaultsDraft((current) => ({
-                ...current,
-                calorieBudget: Number.isFinite(next) ? next : DEFAULT_LOCAL_DEFAULTS.calorieBudget,
-              }));
-            }}
-          />
 
           <label className="label" htmlFor="settings-sort">Default sort</label>
           <select

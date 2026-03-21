@@ -2,10 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { emitEvent } from "../lib/events";
-import { DEFAULT_LOCAL_DEFAULTS, readLocalSettings } from "../lib/localSettings";
 
 export function LandingSearchForm() {
-  const [calories, setCalories] = useState(String(DEFAULT_LOCAL_DEFAULTS.calorieBudget));
+  const [calories, setCalories] = useState("");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -17,19 +16,7 @@ export function LandingSearchForm() {
       return;
     }
 
-    const settings = readLocalSettings();
-    setCalories(String(settings?.defaults.calorieBudget ?? DEFAULT_LOCAL_DEFAULTS.calorieBudget));
-  }, []);
-
-  useEffect(() => {
-    const onDefaultsUpdated = (event: Event) => {
-      const nextDefaults = (event as CustomEvent<typeof DEFAULT_LOCAL_DEFAULTS>).detail;
-      if (!nextDefaults) return;
-      setCalories(String(nextDefaults.calorieBudget));
-    };
-
-    window.addEventListener("cm:local-defaults-updated", onDefaultsUpdated);
-    return () => window.removeEventListener("cm:local-defaults-updated", onDefaultsUpdated);
+    setCalories("");
   }, []);
 
   return (
