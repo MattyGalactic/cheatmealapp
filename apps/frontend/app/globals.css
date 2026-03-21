@@ -496,6 +496,11 @@ main {
   gap: 0.5rem 0.9rem;
 }
 
+.results-page-footer {
+  margin-top: 1rem;
+  padding-top: 0.25rem;
+}
+
 .hero-pick {
   margin-top: 1.05rem;
   display: grid;

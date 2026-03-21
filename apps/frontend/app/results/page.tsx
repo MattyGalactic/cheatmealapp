@@ -61,13 +61,6 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         <header className="results-header">
           <p className="eyebrow">Cheat Meal</p>
           <h1 className="results-title">Here are strong options around your {calories}-calorie target.</h1>
-          <div className="results-header-footer">
-            <div>
-              <p className="results-meta">National chains within 10 miles (Nashville pilot)</p>
-              {data ? <p className="results-meta-source">Data source: {data.meta.dataSource}</p> : null}
-            </div>
-            <Link className="results-meta-link" href="/">Adjust calories</Link>
-          </div>
         </header>
 
         {error ? (
@@ -87,11 +80,20 @@ export default async function ResultsPage({ searchParams }: ResultsPageProps) {
         ) : null}
 
         {!error && data ? (
-          <ResultsListClient
-            calorieBudget={calories}
-            data={data}
-            nextHref={nextHref}
-          />
+          <>
+            <ResultsListClient
+              calorieBudget={calories}
+              data={data}
+              nextHref={nextHref}
+            />
+            <div className="results-header-footer results-page-footer">
+              <div>
+                <p className="results-meta">National chains within 10 miles (Nashville pilot)</p>
+                <p className="results-meta-source">Data source: {data.meta.dataSource}</p>
+              </div>
+              <Link className="results-meta-link" href="/">Adjust calories</Link>
+            </div>
+          </>
         ) : null}
       </div>
     </main>
