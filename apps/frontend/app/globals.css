@@ -1340,14 +1340,25 @@ main {
 
 .settings-header {
   position: fixed;
-  top: calc(12px + env(safe-area-inset-top));
-  right: calc(12px + env(safe-area-inset-right));
+  top: max(10px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 60;
+  width: min(960px, calc(100% - 1rem));
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.35rem;
+  border: 1px solid color-mix(in oklab, var(--border) 88%, transparent);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--bg-elev) 78%, transparent);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--shadow) 38%, transparent);
+  pointer-events: none;
 }
 
 .settings-gear {
-  border: 1px solid var(--border);
-  background: var(--panel);
+  border: 1px solid color-mix(in oklab, var(--border) 86%, transparent);
+  background: color-mix(in oklab, var(--panel) 94%, transparent);
   color: var(--text);
   width: 2.2rem;
   height: 2.2rem;
@@ -1358,7 +1369,32 @@ main {
   font: inherit;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 18px color-mix(in oklab, var(--shadow) 44%, transparent);
+  pointer-events: auto;
+  transition: border-color 120ms ease, background-color 120ms ease, transform 120ms ease;
+}
+
+.settings-gear:hover {
+  border-color: color-mix(in oklab, var(--brand-orange) 34%, var(--border));
+  background: color-mix(in oklab, var(--panel) 90%, var(--surface-soft));
+}
+
+.settings-gear:active {
+  transform: translateY(1px);
+}
+
+.settings-gear:focus-visible {
+  outline: 2px solid hsl(var(--accent));
+  outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+  .settings-header {
+    width: calc(100% - 0.75rem);
+    top: max(8px, env(safe-area-inset-top));
+    padding: 0.3rem;
+    border-radius: 12px;
+  }
 }
 
 .settings-overlay {
